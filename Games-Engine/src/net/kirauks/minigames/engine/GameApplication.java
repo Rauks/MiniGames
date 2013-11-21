@@ -56,19 +56,19 @@ public abstract class GameApplication extends Application{
             @Override
             public void handle(KeyEvent t) {
                 KeyCode key = t.getCode();
-                if(key.equals(Options.getActionKey())){
+                if(!GameApplication.this.paused && key.equals(Options.getActionKey())){
                     GameApplication.this.onActionKeyPressed();
                 }
-                else if(key.equals(Options.getUpKey())){
+                else if(!GameApplication.this.paused && key.equals(Options.getUpKey())){
                     GameApplication.this.onUpKeyPressed();
                 }
-                else if(key.equals(Options.getDownKey())){
+                else if(!GameApplication.this.paused && key.equals(Options.getDownKey())){
                     GameApplication.this.onDownKeyPressed();
                 }
-                else if(key.equals(Options.getLeftKey())){
+                else if(!GameApplication.this.paused && key.equals(Options.getLeftKey())){
                     GameApplication.this.onLeftKeyPressed();
                 }
-                else if(key.equals(Options.getRightKey())){
+                else if(!GameApplication.this.paused && key.equals(Options.getRightKey())){
                     GameApplication.this.onRightKeyPressed();
                 }
                 else if(key.equals(Options.getPauseKey())){
@@ -80,7 +80,7 @@ public abstract class GameApplication extends Application{
             @Override
             public void handle(KeyEvent t) {
                 KeyCode key = t.getCode();
-                if(key.equals(Options.getActionKey())){
+                if(!GameApplication.this.paused && key.equals(Options.getActionKey())){
                     GameApplication.this.onActionKeyReleased();
                 }
             }
