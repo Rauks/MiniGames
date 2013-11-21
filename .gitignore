@@ -7,5 +7,13 @@
 */nbactions.xml
 */nb-configuration.xml
 
+/Games/*/nbproject/private/
+/Games/*/build/
+/Games/*/nbbuild/
+/Games/*/dist/
+/Games/*/nbdist/
+/Games/*/nbactions.xml
+/Games/*/nb-configuration.xml
+
 # Office temp files #
 ~$*
