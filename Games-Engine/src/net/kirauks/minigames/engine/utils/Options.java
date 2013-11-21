@@ -13,24 +13,22 @@ import javafx.scene.input.KeyCode;
  * @author Karl
  */
 public class Options {
-    public Options(){}
-    
-    public KeyCode getUpKey(){
+    public static KeyCode getUpKey(){
         return KeyCode.UP;
     }
-    public KeyCode getDownKey(){
+    public static KeyCode getDownKey(){
         return KeyCode.DOWN;
     }
-    public KeyCode getLeftKey(){
+    public static KeyCode getLeftKey(){
         return KeyCode.LEFT;
     }
-    public KeyCode getRightKey(){
+    public static KeyCode getRightKey(){
         return KeyCode.RIGHT;
     }
-    public KeyCode getActionKey(){
+    public static KeyCode getActionKey(){
         return KeyCode.SPACE;
     }
-    public KeyCode getPauseKey(){
+    public static KeyCode getPauseKey(){
         return KeyCode.ESCAPE;
     }
 }
