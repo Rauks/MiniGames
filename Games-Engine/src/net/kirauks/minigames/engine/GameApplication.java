@@ -9,19 +9,55 @@ package net.kirauks.minigames.engine;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import net.kirauks.minigames.engine.utils.Options;
 
 /**
  *
  * @author Karl
  */
-abstract class GameApplication extends Application{
+abstract class GameApplication extends Application{    
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle(this.createStageTitle());
         
-        Scene scene = this.createScene();        
+        Scene scene = this.createScene();    
+        
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent t) {
+                KeyCode key = t.getCode();
+                if(key.equals(Options.getActionKey())){
+                    GameApplication.this.onActionKeyPressed();
+                }
+                else if(key.equals(Options.getUpKey())){
+                    GameApplication.this.onUpKeyPressed();
+                }
+                else if(key.equals(Options.getDownKey())){
+                    GameApplication.this.onDownKeyPressed();
+                }
+                else if(key.equals(Options.getLeftKey())){
+                    GameApplication.this.onLeftKeyPressed();
+                }
+                else if(key.equals(Options.getRightKey())){
+                    GameApplication.this.onRightKeyPressed();
+                }
+            }
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent t) {
+                KeyCode key = t.getCode();
+                if(key.equals(Options.getActionKey())){
+                    GameApplication.this.onActionKeyReleased();
+                }
+            }
+            
+        });
+        
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -47,18 +83,14 @@ abstract class GameApplication extends Application{
      */
     public abstract Scene createScene();
     
-    /**
-     * Called on GameApplication close;
-     */
     public abstract void onCloseStage();
-    
-    /**
-     * Called on Game pause.
-     */
     public abstract void onPauseGame();
-
-    /**
-     * Called on Game resume.
-     */
     public abstract void onResumeGame();
+    
+    public abstract void onActionKeyPressed();
+    public abstract void onActionKeyReleased();
+    public abstract void onUpKeyPressed();
+    public abstract void onDownKeyPressed();
+    public abstract void onLeftKeyPressed();
+    public abstract void onRightKeyPressed();
 }
