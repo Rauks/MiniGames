@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package game.launcher;
+package net.kirauks.minigames.launcher;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package game.launcher;
+package net.kirauks.minigames.launcher;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +25,7 @@ public class GameLauncher extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
+        stage.setTitle("Games Launcher");
         stage.show();
     }
 

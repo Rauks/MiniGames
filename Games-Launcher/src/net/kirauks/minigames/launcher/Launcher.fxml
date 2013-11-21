@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="net.kirauks.minigames.launcher.LauncherController">
+  <center>
+    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+      <content>
+        <VBox alignment="TOP_LEFT" maxWidth="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
+          <children>
+            <Label text="Informations du jeu :" textAlignment="LEFT">
+              <font>
+                <Font size="30.0" />
+              </font>
+            </Label>
+            <TextArea editable="false" maxWidth="-1.0" prefHeight="451.0" prefWidth="593.0" wrapText="true" />
+            <VBox alignment="TOP_RIGHT" fillWidth="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="NEVER">
+              <children>
+                <Button alignment="CENTER" mnemonicParsing="false" prefWidth="150.0" text="Jouer" textFill="BLACK">
+                  <font>
+                    <Font size="24.0" />
+                  </font>
+                  <graphic>
+                    <ImageView fitHeight="19.0" fitWidth="27.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" rotate="15.0" x="0.0">
+                      <image>
+                        <Image url="@play.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <VBox.margin>
+                    <Insets />
+                  </VBox.margin>
+                </Button>
+              </children>
+            </VBox>
+          </children>
+          <padding>
+            <Insets left="5.0" right="5.0" />
+          </padding>
+        </VBox>
+      </content>
+      <BorderPane.margin>
+        <Insets bottom="5.0" right="5.0" top="21.0" />
+      </BorderPane.margin>
+    </ScrollPane>
+  </center>
+  <left>
+    <VBox prefHeight="-1.0" prefWidth="180.0">
+      <children>
+        <Label text="Tous les jeux :" />
+        <ListView prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
+      </children>
+      <BorderPane.margin>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </BorderPane.margin>
+    </VBox>
+  </left>
+  <top>
+    <MenuBar>
+      <menus>
+        <Menu mnemonicParsing="false" text="Jeux">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Installer" />
+            <MenuItem mnemonicParsing="false" text="Désinstaller" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</BorderPane>
