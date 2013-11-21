@@ -19,9 +19,9 @@ import net.kirauks.minigames.engine.utils.Options;
  *
  * @author Karl
  */
-abstract class GameApplication extends Application{    
+abstract class GameApplication extends Application{
     @Override
-    public void start(Stage stage) throws Exception {
+    final public void start(Stage stage) throws Exception {
         stage.setTitle(this.createStageTitle());
         
         Scene scene = this.createScene();    
