@@ -21,9 +21,8 @@ abstract class GameApplication extends Application{
     public void start(Stage stage) throws Exception {
         stage.setTitle(this.createStageTitle());
         
-        Scene scene = this.createScene();
+        Scene scene = this.createScene();        
         stage.setScene(scene);
-        
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
