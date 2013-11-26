@@ -12,20 +12,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import net.kirauks.minigames.launcher.games.GameModel;
 
@@ -45,7 +40,9 @@ public class LauncherController implements Initializable {
     private ListView listGames;
     
     private GameManager manager;
-    private SimpleStringProperty gameToLaunchPath = new SimpleStringProperty(null);
+    private final SimpleStringProperty selectedGamePath = new SimpleStringProperty(null);
+    private final SimpleStringProperty selectedGameTitle = new SimpleStringProperty(null);
+    private final SimpleStringProperty selectedGameDescription = new SimpleStringProperty(null);
     
     @FXML
     private void handleMenuInstall(ActionEvent event) {
@@ -75,20 +72,27 @@ public class LauncherController implements Initializable {
         
         this.listGames.setItems(this.manager.gamesListProperty());
         
-        this.gameDescription.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
         this.gameTitle.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
+        this.gameDescription.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
         this.gameStart.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
         
-        this.listGames.selectionModelProperty().addListener(new ChangeListener<GameModel>(){
+        this.gameTitle.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
+        this.gameDescription.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
+        this.gameStart.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
+        
+        this.gameTitle.textProperty().bind(this.selectedGameTitle);
+        this.gameDescription.textProperty().bind(this.selectedGameDescription);
+        
+        this.listGames.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GameModel>(){
             @Override
             public void changed(ObservableValue<? extends GameModel> observableValue, GameModel oldValue, GameModel newValue) {
-                LauncherController.this.gameToLaunchPath.unbind();
-                LauncherController.this.gameTitle.textProperty().unbind();
-                LauncherController.this.gameDescription.textProperty().unbind();
+                LauncherController.this.selectedGamePath.unbind();
+                LauncherController.this.selectedGameTitle.unbind();
+                LauncherController.this.selectedGameDescription.unbind();
                 if(newValue != null){
-                    LauncherController.this.gameToLaunchPath.bind(newValue.pathProperty());
-                    LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
-                    LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
+                    LauncherController.this.selectedGamePath.bind(newValue.pathProperty());
+                    LauncherController.this.selectedGameTitle.bind(newValue.nameProperty());
+                    LauncherController.this.selectedGameDescription.bind(newValue.descriptionProperty());
                 }
             }
         });

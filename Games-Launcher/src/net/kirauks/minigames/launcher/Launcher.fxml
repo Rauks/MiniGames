@@ -16,7 +16,7 @@
       <content>
         <VBox alignment="TOP_LEFT" maxWidth="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
           <children>
-            <Label fx:id="gameTitle" text="Informations du jeu :" textAlignment="LEFT">
+            <Label fx:id="gameTitle" text="" textAlignment="LEFT">
               <font>
                 <Font size="30.0" />
               </font>
