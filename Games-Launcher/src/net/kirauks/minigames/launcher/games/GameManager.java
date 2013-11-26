@@ -83,10 +83,9 @@ public class GameManager {
     }
     private synchronized void writeDatabase(ArrayList<GameModel> datas) throws IOException{
         Files.copy(DB.toPath(), DB_BACKUP.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        
-        ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(DB)));
-        oos.writeObject(datas);
-        oos.flush();
-        oos.close();
+        try (ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(DB)))) {
+            oos.writeObject(datas);
+            oos.flush();
+        }
     }
 }
