@@ -26,6 +26,7 @@ public class GameLauncher extends Application {
         
         stage.setScene(scene);
         stage.setTitle("Games Launcher");
+        stage.setResizable(false);
         stage.show();
     }
 
