@@ -6,6 +6,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -15,15 +16,15 @@
       <content>
         <VBox alignment="TOP_LEFT" maxWidth="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
           <children>
-            <Label text="Informations du jeu :" textAlignment="LEFT">
+            <Label fx:id="gameTitle" text="Informations du jeu :" textAlignment="LEFT">
               <font>
                 <Font size="30.0" />
               </font>
             </Label>
-            <TextArea editable="false" maxWidth="-1.0" prefHeight="451.0" prefWidth="593.0" wrapText="true" />
+            <TextArea fx:id="gameDescription" editable="false" maxWidth="-1.0" prefHeight="451.0" prefWidth="593.0" text="" wrapText="true" />
             <VBox alignment="TOP_RIGHT" fillWidth="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="NEVER">
               <children>
-                <Button alignment="CENTER" mnemonicParsing="false" prefWidth="150.0" text="Jouer" textFill="BLACK">
+                <Button fx:id="gameStart" alignment="CENTER" mnemonicParsing="false" onAction="#handleMenuGameStart" prefWidth="150.0" text="Jouer" textFill="BLACK">
                   <font>
                     <Font size="24.0" />
                   </font>
@@ -55,7 +56,7 @@
     <VBox prefHeight="-1.0" prefWidth="180.0">
       <children>
         <Label text="Tous les jeux :" />
-        <ListView prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
+        <ListView fx:id="listGames" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
       </children>
       <BorderPane.margin>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -67,8 +68,16 @@
       <menus>
         <Menu mnemonicParsing="false" text="Jeux">
           <items>
-            <MenuItem mnemonicParsing="false" text="Installer" />
-            <MenuItem mnemonicParsing="false" text="Désinstaller" />
+            <MenuItem mnemonicParsing="false" onAction="#handleMenuInstall" text="Installer">
+              <accelerator>
+                <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+              </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#handleMenuUninstall" text="Désinstaller">
+              <accelerator>
+                <KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+              </accelerator>
+            </MenuItem>
           </items>
         </Menu>
       </menus>
