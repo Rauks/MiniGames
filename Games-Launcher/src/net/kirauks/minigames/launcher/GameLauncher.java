@@ -8,6 +8,7 @@ package net.kirauks.minigames.launcher;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,7 +21,10 @@ public class GameLauncher extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Launcher.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Launcher.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        LauncherController controller = fxmlLoader.<LauncherController>getController();
+        controller.setStage(stage);
         
         Scene scene = new Scene(root);
         

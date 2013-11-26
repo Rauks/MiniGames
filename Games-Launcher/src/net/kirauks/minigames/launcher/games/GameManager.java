@@ -23,6 +23,10 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import net.kirauks.minigames.launcher.games.tasks.LaunchTask;
 import net.kirauks.minigames.launcher.games.utils.LibCopyVisitor;
 
 /**
@@ -86,23 +90,34 @@ public class GameManager {
 
         final ProcessBuilder pb = new ProcessBuilder("java", "-Xms1024m", "-Xmx1024m", "-jar", gameFile.toAbsolutePath().toString());
         pb.directory(runPath.toAbsolutePath().toFile());
-        if(this.startListener != null){
-            this.startListener.onGameStart(game);
-        }
-        new Thread(new Runnable() {
+
+        Task launcher = new LaunchTask(pb);
+        launcher.setOnRunning(new EventHandler() {
             @Override
-            public void run() {
-                try {
-                    Process p = pb.start();
-                    p.waitFor();
-                    if(GameManager.this.finishListener != null){
-                        GameManager.this.finishListener.onGameFinish(game);
-                    }
-                } catch (InterruptedException | IOException ex) {
-                    Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            public void handle(Event t) {
+                if(GameManager.this.startListener != null){
+                    GameManager.this.startListener.onGameStart(game);
                 }
             }
-        }).start();
+        });
+        launcher.setOnSucceeded(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                if(GameManager.this.finishListener != null){
+                    GameManager.this.finishListener.onGameFinish(game);
+                }
+            }
+        });
+        launcher.setOnFailed(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                if(GameManager.this.finishListener != null){
+                    GameManager.this.finishListener.onGameFinish(game);
+                }
+            }
+        });
+        
+        new Thread(launcher).start();
 
     }
 

@@ -37,7 +37,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import net.kirauks.minigames.launcher.games.GameModel;
+import net.kirauks.minigames.launcher.games.OnGameFinishListener;
+import net.kirauks.minigames.launcher.games.OnGameStartListener;
 
 /**
  *
@@ -71,7 +74,7 @@ public class LauncherController implements Initializable {
         chooser.setInitialDirectory(new File(System.getProperty("user.home")));
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Jeu", "*.gsetup"));
         
-        File installer = chooser.showOpenDialog(this.getScene().getWindow());
+        File installer = chooser.showOpenDialog(this.getStage().getScene().getWindow());
         if(installer != null && installer.canRead()){
             try(BufferedReader br =  new BufferedReader(new InputStreamReader(new FileInputStream(installer), Charset.forName("UTF-8")))){
                 String titleStr = br.readLine();
@@ -111,6 +114,18 @@ public class LauncherController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.manager.setOnGameStartListener(new OnGameStartListener() {
+            @Override
+            public void onGameStart(GameModel game) {
+                LauncherController.this.getStage().setIconified(true);
+            }
+        });
+        this.manager.setOnGameFinishListener(new OnGameFinishListener() {
+            @Override
+            public void onGameFinish(GameModel game) {
+                LauncherController.this.getStage().setIconified(false);
+            }
+        });
         
         this.listGames.setItems(this.manager.gamesListProperty());
         
@@ -142,7 +157,11 @@ public class LauncherController implements Initializable {
         });
     }
     
-    protected Scene getScene(){
-        return this.rootPane.getScene();
+    private Stage stage;
+    protected Stage getStage(){
+        return this.stage;
+    }
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
 }
