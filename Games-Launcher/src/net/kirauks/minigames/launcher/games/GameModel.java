@@ -23,17 +23,20 @@ public class GameModel implements Externalizable{
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleStringProperty path;
+    private SimpleStringProperty uuid;
     
     public GameModel(){
         this.name = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
         this.path = new SimpleStringProperty();
+        this.uuid = new SimpleStringProperty();
     }
-    public GameModel(String name, String description, String url){
+    public GameModel(String name, String description, String url, String uuid){
         this();
         this.name.setValue(name);
         this.description.setValue(description);
         this.path.setValue(url);
+        this.uuid.setValue(uuid);
     }
     
     public ReadOnlyStringProperty nameProperty(){
@@ -45,6 +48,22 @@ public class GameModel implements Externalizable{
     public ReadOnlyStringProperty pathProperty(){
         return this.path;
     }
+    public ReadOnlyStringProperty uuidProperty(){
+        return this.uuid;
+    }
+
+    public void setName(String name) {
+        this.name.setValue(name);
+    }
+    public void setDescription(String description) {
+        this.description.setValue(description);
+    }
+    public void setPath(String path) {
+        this.path.setValue(path);
+    }
+    public void setUuid(String uuid) {
+        this.uuid.setValue(uuid);
+    }
     
     public String getName(){
         return this.name.getValue();
@@ -55,12 +74,16 @@ public class GameModel implements Externalizable{
     public String getPath(){
         return this.path.getValue();
     }
+    public String getUuid(){
+        return this.uuid.getValue();
+    }
 
     @Override
     public void writeExternal(ObjectOutput oo) throws IOException {
         oo.writeObject(this.name.getValue());
         oo.writeObject(this.description.getValue());
         oo.writeObject(this.path.getValue());
+        oo.writeObject(this.uuid.getValue());
     }
 
     @Override
@@ -68,6 +91,7 @@ public class GameModel implements Externalizable{
         this.name.setValue((String) oi.readObject());
         this.description.setValue((String) oi.readObject());
         this.path.setValue((String) oi.readObject());
+        this.uuid.setValue((String) oi.readObject());
     }
     
     @Override

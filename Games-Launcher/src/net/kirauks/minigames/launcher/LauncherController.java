@@ -10,11 +10,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import net.kirauks.minigames.launcher.games.GameManager;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
@@ -53,6 +60,7 @@ public class LauncherController implements Initializable {
     private final SimpleStringProperty selectedGamePath = new SimpleStringProperty(null);
     private final SimpleStringProperty selectedGameTitle = new SimpleStringProperty(null);
     private final SimpleStringProperty selectedGameDescription = new SimpleStringProperty(null);
+    private final SimpleStringProperty selectedGameUUID = new SimpleStringProperty(null);
     
     private FileChooser installChooser;
     
@@ -73,11 +81,9 @@ public class LauncherController implements Initializable {
                 while((descLine = br.readLine()) != null){
                     destStr.append(descLine).append(System.lineSeparator());
                 }
-                System.out.println(titleStr + " : " + pathStr + " : " + destStr.toString());
-                File gameDatas = new File(installer.getParent() + File.separator + pathStr);
-                System.out.println(installer.getParent() + File.separator + pathStr);
-                if(!titleStr.isEmpty() && !pathStr.isEmpty() && gameDatas.exists() && pathStr.endsWith(".jar")){
-                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr), gameDatas);
+                Path gameDatas = Paths.get(installer.getParent(), pathStr);
+                if(!titleStr.isEmpty() && !pathStr.isEmpty() && Files.exists(gameDatas) && pathStr.endsWith(".jar")){
+                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr, UUID.randomUUID().toString()), gameDatas);
                 }
             } catch(IOException ex){
                  Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +97,11 @@ public class LauncherController implements Initializable {
     
     @FXML
     private void handleMenuGameStart(ActionEvent event) {
-        
+        try {
+            this.manager.launchGame(new GameModel(this.selectedGameTitle.getValue(), this.selectedGameDescription.getValue(), this.selectedGamePath.getValue(), this.selectedGameUUID.getValue()));
+        } catch (IOException ex) {
+            Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
@@ -121,10 +131,12 @@ public class LauncherController implements Initializable {
                 LauncherController.this.selectedGamePath.unbind();
                 LauncherController.this.selectedGameTitle.unbind();
                 LauncherController.this.selectedGameDescription.unbind();
+                LauncherController.this.selectedGameUUID.unbind();
                 if(newValue != null){
                     LauncherController.this.selectedGamePath.bind(newValue.pathProperty());
                     LauncherController.this.selectedGameTitle.bind(newValue.nameProperty());
                     LauncherController.this.selectedGameDescription.bind(newValue.descriptionProperty());
+                    LauncherController.this.selectedGameUUID.bind(newValue.uuidProperty());
                 }
             }
         });
