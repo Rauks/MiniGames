@@ -68,9 +68,7 @@ public class GameManager {
             Files.createDirectory(LOCAL_GAMES_REPOSITORY);
         }
         Path destPath = FileSystems.getDefault().getPath(LOCAL_GAMES_REPOSITORY.toString(), UUID.randomUUID().toString().concat(".jar"));
-        System.out.println("Copy to " + destPath);
         Files.copy(gameDatas.toPath(), destPath, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println("Copied");
         this.installGame(new GameModel(game.getName(), game.getDescription(), destPath.toString()));
     }
     public void uninstallGame(GameModel game) throws IOException{

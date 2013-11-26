@@ -6,9 +6,14 @@
 
 package net.kirauks.minigames.launcher;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import net.kirauks.minigames.launcher.games.GameManager;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,10 +23,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import net.kirauks.minigames.launcher.games.GameModel;
 
 /**
@@ -29,6 +37,8 @@ import net.kirauks.minigames.launcher.games.GameModel;
  * @author Karl
  */
 public class LauncherController implements Initializable {
+    @FXML
+    private Pane rootPane;
     @FXML
     private TextArea gameDescription;
     @FXML
@@ -44,12 +54,34 @@ public class LauncherController implements Initializable {
     private final SimpleStringProperty selectedGameTitle = new SimpleStringProperty(null);
     private final SimpleStringProperty selectedGameDescription = new SimpleStringProperty(null);
     
+    private FileChooser installChooser;
+    
     @FXML
     private void handleMenuInstall(ActionEvent event) {
-        try {
-            this.manager.installGame(new GameModel("Test", "Test description", "test.txt"));
-        } catch (IOException ex) {
-            Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Installation");
+        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Jeu", "*.gsetup"));
+        
+        File installer = chooser.showOpenDialog(this.getScene().getWindow());
+        if(installer != null && installer.canRead()){
+            try(BufferedReader br =  new BufferedReader(new InputStreamReader(new FileInputStream(installer), Charset.forName("UTF-8")))){
+                String titleStr = br.readLine();
+                String pathStr = br.readLine();
+                StringBuilder destStr = new StringBuilder();
+                String descLine;
+                while((descLine = br.readLine()) != null){
+                    destStr.append(descLine).append(System.lineSeparator());
+                }
+                System.out.println(titleStr + " : " + pathStr + " : " + destStr.toString());
+                File gameDatas = new File(installer.getParent() + File.separator + pathStr);
+                System.out.println(installer.getParent() + File.separator + pathStr);
+                if(!titleStr.isEmpty() && !pathStr.isEmpty() && gameDatas.exists() && pathStr.endsWith(".jar")){
+                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr), gameDatas);
+                }
+            } catch(IOException ex){
+                 Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     @FXML
@@ -96,5 +128,9 @@ public class LauncherController implements Initializable {
                 }
             }
         });
+    }
+    
+    protected Scene getScene(){
+        return this.rootPane.getScene();
     }
 }
