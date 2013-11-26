@@ -72,7 +72,7 @@ public class GameManager {
     }
     
     
-    private ArrayList<GameModel> readDatabase() throws IOException{
+    private synchronized ArrayList<GameModel> readDatabase() throws IOException{
         ArrayList<GameModel> datas = null;
         try(ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(DB)))){
             datas = (ArrayList<GameModel>) ois.readObject();
@@ -81,10 +81,12 @@ public class GameManager {
         }
         return datas;
     }
-    private void writeDatabase(ArrayList<GameModel> datas) throws IOException{
+    private synchronized void writeDatabase(ArrayList<GameModel> datas) throws IOException{
         Files.copy(DB.toPath(), DB_BACKUP.toPath(), StandardCopyOption.REPLACE_EXISTING);
         
         ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(DB)));
         oos.writeObject(datas);
+        oos.flush();
+        oos.close();
     }
 }
