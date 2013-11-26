@@ -125,13 +125,13 @@ public class LauncherController implements Initializable {
         
         this.listGames.setItems(this.manager.gamesListProperty());
         
-        this.gameTitle.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
-        this.gameDescription.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
-        this.gameStart.disableProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNull());
+        this.gameTitle.disableProperty().bind(this.selectedGame.isNull());
+        this.gameDescription.disableProperty().bind(this.selectedGame.isNull());
+        this.gameStart.disableProperty().bind(this.selectedGame.isNull());
         
-        this.gameTitle.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
-        this.gameDescription.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
-        this.gameStart.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
+        this.gameTitle.visibleProperty().bind(this.selectedGame.isNotNull());
+        this.gameDescription.visibleProperty().bind(this.selectedGame.isNotNull());
+        this.gameStart.visibleProperty().bind(this.selectedGame.isNotNull());
         
         this.listGames.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GameModel>(){
             @Override
