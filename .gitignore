@@ -15,5 +15,10 @@
 /Games/*/nbactions.xml
 /Games/*/nb-configuration.xml
 
+# Launcher DB files #
+
+*.db
+*.db.bak
+
 # Office temp files #
 ~$*
