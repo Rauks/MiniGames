@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -48,8 +50,6 @@ import net.kirauks.minigames.launcher.games.OnGameStartListener;
  */
 public class LauncherController implements Initializable {
     @FXML
-    private Pane rootPane;
-    @FXML
     private TextArea gameDescription;
     @FXML
     private Label gameTitle;
@@ -60,12 +60,8 @@ public class LauncherController implements Initializable {
     private ListView listGames;
     
     private GameManager manager;
-    private final SimpleStringProperty selectedGamePath = new SimpleStringProperty(null);
-    private final SimpleStringProperty selectedGameTitle = new SimpleStringProperty(null);
-    private final SimpleStringProperty selectedGameDescription = new SimpleStringProperty(null);
-    private final SimpleStringProperty selectedGameUUID = new SimpleStringProperty(null);
+    private final ReadOnlyObjectWrapper<GameModel> selectedGame = new ReadOnlyObjectWrapper<>(null);
     
-    private FileChooser installChooser;
     
     @FXML
     private void handleMenuInstall(ActionEvent event) {
@@ -101,7 +97,7 @@ public class LauncherController implements Initializable {
     @FXML
     private void handleMenuGameStart(ActionEvent event) {
         try {
-            this.manager.launchGame(new GameModel(this.selectedGameTitle.getValue(), this.selectedGameDescription.getValue(), this.selectedGamePath.getValue(), this.selectedGameUUID.getValue()));
+            this.manager.launchGame(this.selectedGame.getValue());
         } catch (IOException ex) {
             Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,21 +133,24 @@ public class LauncherController implements Initializable {
         this.gameDescription.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
         this.gameStart.visibleProperty().bind(this.listGames.getSelectionModel().selectedItemProperty().isNotNull());
         
-        this.gameTitle.textProperty().bind(this.selectedGameTitle);
-        this.gameDescription.textProperty().bind(this.selectedGameDescription);
-        
         this.listGames.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GameModel>(){
             @Override
             public void changed(ObservableValue<? extends GameModel> observableValue, GameModel oldValue, GameModel newValue) {
-                LauncherController.this.selectedGamePath.unbind();
-                LauncherController.this.selectedGameTitle.unbind();
-                LauncherController.this.selectedGameDescription.unbind();
-                LauncherController.this.selectedGameUUID.unbind();
+                LauncherController.this.selectedGame.setValue(null);
                 if(newValue != null){
-                    LauncherController.this.selectedGamePath.bind(newValue.pathProperty());
-                    LauncherController.this.selectedGameTitle.bind(newValue.nameProperty());
-                    LauncherController.this.selectedGameDescription.bind(newValue.descriptionProperty());
-                    LauncherController.this.selectedGameUUID.bind(newValue.uuidProperty());
+                    LauncherController.this.selectedGame.setValue(newValue);
+                }
+            }
+        });
+        
+        this.selectedGame.addListener(new ChangeListener<GameModel>() {
+            @Override
+            public void changed(ObservableValue<? extends GameModel> observableValue, GameModel oldValue, GameModel newValue) {
+                LauncherController.this.gameTitle.textProperty().unbind();
+                LauncherController.this.gameDescription.textProperty().unbind();
+                if(newValue != null){
+                    LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
+                    LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
                 }
             }
         });
