@@ -6,6 +6,7 @@
 
 package net.kirauks.minigames.launcher.games;
 
+import java.io.Serializable;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -13,10 +14,12 @@ import javafx.beans.property.SimpleStringProperty;
  *
  * @author Karl
  */
-public class GameModel {
+public class GameModel implements Serializable{
+    private static final long serialVersionUID = 1L;
+    
     private SimpleStringProperty name;
     private SimpleStringProperty description;
-    private SimpleStringProperty url;
+    private SimpleStringProperty path;
     
     public GameModel(String name, String description, String url){
         this.name = new SimpleStringProperty(name);
@@ -30,7 +33,17 @@ public class GameModel {
     public ReadOnlyStringProperty descriptionProperty(){
         return this.description;
     }
-    public ReadOnlyStringProperty urlProperty(){
-        return this.url;
+    public ReadOnlyStringProperty pathProperty(){
+        return this.path;
+    }
+    
+    public String getName(){
+        return this.name.getValue();
+    }
+    public String getDescription(){
+        return this.description.getValue();
+    }
+    public String getPath(){
+        return this.path.getValue();
     }
 }
