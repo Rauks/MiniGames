@@ -12,7 +12,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -28,11 +30,11 @@ import javafx.collections.ObservableList;
  * @author Karl
  */
 public class GameManager {
-    private final static String LOCAL_GAMES_REPOSITORY = "games";
-    private final static String DATABASE_FILE = "games.db";
-    private final static String DATABASE_FILE_BACKUP = "games.db.bak";
-    private final static File DB = new File(DATABASE_FILE);
-    private final static File DB_BACKUP = new File(DATABASE_FILE_BACKUP);
+    private final static Path LOCAL_GAMES_REPOSITORY = FileSystems.getDefault().getPath("games");
+    private final static Path DATABASE_FILE = FileSystems.getDefault().getPath("games.db");
+    private final static Path DATABASE_FILE_BACKUP = FileSystems.getDefault().getPath("games.db.bak");
+    private final static File DB = DATABASE_FILE.toFile();
+    private final static File DB_BACKUP = DATABASE_FILE_BACKUP.toFile();
     
     private static GameManager INSTANCE = null;
     
@@ -62,9 +64,14 @@ public class GameManager {
         this.writeDatabase(new ArrayList<>(this.games));
     }
     public void installGameWithLocalCopy(GameModel game, File gameDatas) throws IOException{
-        File dest = new File(LOCAL_GAMES_REPOSITORY + File.pathSeparator + UUID.randomUUID().toString());
-        Files.copy(gameDatas.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        this.installGame(new GameModel(game.getName(), game.getDescription(), dest.getPath()));
+        if(!Files.isDirectory(LOCAL_GAMES_REPOSITORY)){
+            Files.createDirectory(LOCAL_GAMES_REPOSITORY);
+        }
+        Path destPath = FileSystems.getDefault().getPath(LOCAL_GAMES_REPOSITORY.toString(), UUID.randomUUID().toString().concat(".jar"));
+        System.out.println("Copy to " + destPath);
+        Files.copy(gameDatas.toPath(), destPath, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("Copied");
+        this.installGame(new GameModel(game.getName(), game.getDescription(), destPath.toString()));
     }
     public void uninstallGame(GameModel game) throws IOException{
         this.games.remove(game);
