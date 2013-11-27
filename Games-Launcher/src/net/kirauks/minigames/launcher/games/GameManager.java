@@ -5,29 +5,39 @@
  */
 package net.kirauks.minigames.launcher.games;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import net.kirauks.minigames.launcher.games.tasks.LaunchTask;
-import net.kirauks.minigames.launcher.games.utils.LibCopyVisitor;
+import net.kirauks.minigames.launcher.games.utils.DeleteVisitor;
 
 /**
  *
@@ -35,6 +45,8 @@ import net.kirauks.minigames.launcher.games.utils.LibCopyVisitor;
  */
 public class GameManager {
 
+    private final static Path GAME_METADATA_FILE = Paths.get("game.metadata");
+    private final static Path GAME_RUN_FILE = Paths.get("game.jar");
     private final static Path GAME_RUN_DIRECTORY = Paths.get("games-data");
     private final static Path LOCAL_GAMES_REPOSITORY = Paths.get("games");
     private final static Path DATABASE_FILE = Paths.get("games.db");
@@ -126,27 +138,60 @@ public class GameManager {
         this.writeDatabase(new ArrayList<>(this.games));
     }
 
-    public void installGameWithLocalCopy(GameModel game, Path gameDatas) throws IOException {
-        if (!Files.isDirectory(LOCAL_GAMES_REPOSITORY)) {
-            Files.createDirectory(LOCAL_GAMES_REPOSITORY);
+    public void installGameWithLocalCopy(Path gsetupFile) throws IOException{
+        String gameUUID = UUID.randomUUID().toString();
+        Path installPath = Paths.get(LOCAL_GAMES_REPOSITORY.toString(), gameUUID);
+        Files.createDirectories(installPath);
+        
+        try(ZipFile gsetup = new ZipFile(gsetupFile.toFile())){
+            Enumeration<? extends ZipEntry> gsetupEntries = gsetup.entries();
+            while(gsetupEntries.hasMoreElements()){
+                ZipEntry gsetupEntry = gsetupEntries.nextElement();
+                Path toDeflate = Paths.get(installPath.toString(), gsetupEntry.getName());
+                if(Files.isDirectory(toDeflate)) {
+                    Files.createDirectory(toDeflate);
+                }
+                else{
+                    Files.createDirectories(toDeflate.getParent());
+                    final int BUFFER = 2048;
+                    byte data[] = new byte[BUFFER];
+                    try(OutputStream os = new BufferedOutputStream(new FileOutputStream(toDeflate.toFile()), BUFFER);
+                      InputStream is = gsetup.getInputStream(gsetupEntry)){
+                        int read = -1;
+                        while((read = is.read(data, 0, BUFFER)) != -1){
+                            os.write(data, 0, read);
+                        }
+                        os.flush();
+                    }
+                }
+            } 
+            
+            Path metaDatas = Paths.get(installPath.toString(), GAME_METADATA_FILE.toString());
+            if(!Files.isRegularFile(metaDatas)){
+                throw new IOException("Unreachable game metadatas.");
+            }
+            Path gamePath = Paths.get(installPath.toString(), GAME_RUN_FILE.toString());
+            if(!Files.isRegularFile(metaDatas)){
+                throw new IOException("Unreachable game executable.");
+            }
+            
+            String titleStr;
+            StringBuilder descStr = new StringBuilder();
+            try(BufferedReader br =  new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(metaDatas.toFile())), Charset.forName("UTF-8")))){
+                titleStr = br.readLine();
+                String descLine;
+                while((descLine = br.readLine()) != null){
+                    descStr.append(descLine).append(System.lineSeparator());
+                }
+            }
+            
+            Files.deleteIfExists(metaDatas);
+            this.installGame(new GameModel(titleStr, descStr.toString(), gamePath.toString(), null, gameUUID));
+            
+        } catch (IOException ex) {
+            Files.walkFileTree(installPath, new DeleteVisitor());
+            throw ex;
         }
-
-        String gameUUID = game.getUuid();
-        Path installPath = Paths.get(LOCAL_GAMES_REPOSITORY.toString(), gameUUID.toString());
-        Path gamePath = Paths.get(installPath.toString(), "game.jar");
-        Path libsPath = Paths.get(installPath.toString(), "lib");
-
-        if (!Files.isDirectory(installPath)) {
-            Files.createDirectory(installPath);
-        }
-
-        Files.copy(gameDatas, gamePath, StandardCopyOption.REPLACE_EXISTING);
-
-        Path libDatas = Paths.get(gameDatas.getParent().toString(), "lib");
-        Files.walkFileTree(libDatas, new LibCopyVisitor(libDatas, libsPath, StandardCopyOption.REPLACE_EXISTING));
-
-        game.setPath(gamePath.toString());
-        this.installGame(game);
     }
 
     public void uninstallGame(GameModel game) throws IOException {

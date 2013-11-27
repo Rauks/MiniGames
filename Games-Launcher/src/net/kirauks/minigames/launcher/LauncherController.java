@@ -81,21 +81,10 @@ public class LauncherController implements Initializable {
         
         File installer = chooser.showOpenDialog(this.getStage().getScene().getWindow());
         if(installer != null && installer.canRead()){
-            try(BufferedReader br =  new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(installer)), Charset.forName("UTF-8")))){
-                String titleStr = br.readLine();
-                String pathStr = br.readLine();
-                String splashStr = br.readLine();
-                StringBuilder destStr = new StringBuilder();
-                String descLine;
-                while((descLine = br.readLine()) != null){
-                    destStr.append(descLine).append(System.lineSeparator());
-                }
-                Path gameDatas = Paths.get(installer.getParent(), pathStr);
-                if(!titleStr.isEmpty() && !pathStr.isEmpty() && !splashStr.isEmpty() && Files.exists(gameDatas) && pathStr.endsWith(".jar")){
-                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr, splashStr, UUID.randomUUID().toString()), gameDatas);
-                }
-            } catch(IOException ex){
-                 Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                this.manager.installGameWithLocalCopy(Paths.get(installer.toURI()));
+            } catch (IOException ex) {
+                Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

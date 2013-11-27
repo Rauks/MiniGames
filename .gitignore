@@ -22,5 +22,9 @@
 /Games-Launcher/games/*
 /Games-Launcher/games-data/*
 
+# Installer games files #
+
+*.gsetup
+
 # Office temp files #
 ~$*
