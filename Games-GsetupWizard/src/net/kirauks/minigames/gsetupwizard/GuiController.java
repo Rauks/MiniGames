@@ -6,11 +6,19 @@
 
 package net.kirauks.minigames.gsetupwizard;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -55,9 +63,26 @@ public class GuiController implements Initializable {
     @FXML
     private void handleButtonBuild(ActionEvent event) {
         Path gamePath = Paths.get(this.gameFile.getValue().getPath());
-        System.out.println(this.titleField.getText());
-        System.out.println(gamePath.getFileName().toString());
-        System.out.println(this.descriptionArea.getText());
+        String fileName = gamePath.getFileName().toString();
+        Path gsetupPath = Paths.get(gamePath.getParent().toString(), fileName.substring(0, fileName.lastIndexOf(".")).concat(".gsetup"));
+        
+        try {
+            Files.deleteIfExists(gsetupPath);
+            Files.createFile(gsetupPath);
+        } catch (IOException ex) {
+            Logger.getLogger(GuiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(gsetupPath.toString())))){
+            bw.write(this.titleField.getText());
+            bw.write(System.lineSeparator());
+            bw.write(gamePath.getFileName().toString());
+            bw.write(System.lineSeparator());
+            bw.write(this.descriptionArea.getText());
+            bw.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(GuiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
