@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package games.gsetupwizard;
+package net.kirauks.minigames.gsetupwizard;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,10 @@ public class GamesGsetupWizard extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Gui.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Gui.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        GuiController controller = fxmlLoader.<GuiController>getController();
+        controller.setStage(stage);
         
         Scene scene = new Scene(root);
         
@@ -39,5 +42,4 @@ public class GamesGsetupWizard extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
