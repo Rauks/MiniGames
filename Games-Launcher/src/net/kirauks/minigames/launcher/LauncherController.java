@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -36,7 +37,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -54,7 +57,13 @@ public class LauncherController implements Initializable {
     @FXML
     private Label gameTitle;
     @FXML
+    private Label gameTime;
+    @FXML
+    private ImageView gameSplash;
+    @FXML
     private Button gameStart;
+    @FXML
+    private ScrollPane gameInfoPane;
     
     @FXML
     private ListView listGames;
@@ -72,17 +81,18 @@ public class LauncherController implements Initializable {
         
         File installer = chooser.showOpenDialog(this.getStage().getScene().getWindow());
         if(installer != null && installer.canRead()){
-            try(BufferedReader br =  new BufferedReader(new InputStreamReader(new FileInputStream(installer), Charset.forName("UTF-8")))){
+            try(BufferedReader br =  new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(installer)), Charset.forName("UTF-8")))){
                 String titleStr = br.readLine();
                 String pathStr = br.readLine();
+                String splashStr = br.readLine();
                 StringBuilder destStr = new StringBuilder();
                 String descLine;
                 while((descLine = br.readLine()) != null){
                     destStr.append(descLine).append(System.lineSeparator());
                 }
                 Path gameDatas = Paths.get(installer.getParent(), pathStr);
-                if(!titleStr.isEmpty() && !pathStr.isEmpty() && Files.exists(gameDatas) && pathStr.endsWith(".jar")){
-                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr, UUID.randomUUID().toString()), gameDatas);
+                if(!titleStr.isEmpty() && !pathStr.isEmpty() && !splashStr.isEmpty() && Files.exists(gameDatas) && pathStr.endsWith(".jar")){
+                    this.manager.installGameWithLocalCopy(new GameModel(titleStr, destStr.toString(), pathStr, splashStr, UUID.randomUUID().toString()), gameDatas);
                 }
             } catch(IOException ex){
                  Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,13 +135,7 @@ public class LauncherController implements Initializable {
         
         this.listGames.setItems(this.manager.gamesListProperty());
         
-        this.gameTitle.disableProperty().bind(this.selectedGame.isNull());
-        this.gameDescription.disableProperty().bind(this.selectedGame.isNull());
-        this.gameStart.disableProperty().bind(this.selectedGame.isNull());
-        
-        this.gameTitle.visibleProperty().bind(this.selectedGame.isNotNull());
-        this.gameDescription.visibleProperty().bind(this.selectedGame.isNotNull());
-        this.gameStart.visibleProperty().bind(this.selectedGame.isNotNull());
+        this.gameInfoPane.visibleProperty().bind(this.selectedGame.isNotNull());
         
         this.listGames.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GameModel>(){
             @Override
@@ -148,9 +152,15 @@ public class LauncherController implements Initializable {
             public void changed(ObservableValue<? extends GameModel> observableValue, GameModel oldValue, GameModel newValue) {
                 LauncherController.this.gameTitle.textProperty().unbind();
                 LauncherController.this.gameDescription.textProperty().unbind();
+                LauncherController.this.gameTime.textProperty().unbind();
+                LauncherController.this.gameSplash.imageProperty().unbind();
                 if(newValue != null){
                     LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
                     LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
+                    LauncherController.this.gameTime.textProperty().bind(newValue.playtimeHoursProperty().asString()
+                                                                        .concat("h")
+                                                                        .concat(newValue.playtimeMinutesProperty().asString()));
+                    LauncherController.this.gameSplash.imageProperty().bind(newValue.splashProperty());
                 }
             }
         });
