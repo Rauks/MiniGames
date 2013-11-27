@@ -62,11 +62,11 @@ public class GuiController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.titleField.disableProperty().bind(this.fileField.textProperty().isNull());
-        this.descriptionArea.disableProperty().bind(this.fileField.textProperty().isNull());
-        this.genButton.disableProperty().bind(this.fileField.textProperty().isNull().or(
-                                              this.titleField.textProperty().isNull().or(
-                                              this.descriptionArea.textProperty().isNull())));
+        this.titleField.disableProperty().bind(this.fileField.textProperty().isEqualTo(""));
+        this.descriptionArea.disableProperty().bind(this.fileField.textProperty().isEqualTo(""));
+        this.genButton.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
+                                              this.titleField.textProperty().isEqualTo("").or(
+                                              this.descriptionArea.textProperty().isEqualTo(""))));
         
         this.gameFile.addListener(new ChangeListener<File>() {
             @Override
