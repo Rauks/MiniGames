@@ -6,37 +6,32 @@
 
 package net.kirauks.minigames.gsetupwizard;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import net.kirauks.minigames.gsetupwizard.tasks.GsetupTask;
 
 /**
  *
  * @author Karl
  */
 public class GuiController implements Initializable {
-    
     @FXML
     private TextField fileField;
     @FXML
@@ -44,9 +39,14 @@ public class GuiController implements Initializable {
     @FXML
     private TextArea descriptionArea;
     @FXML
+    private Button openButton;
+    @FXML
     private Button genButton;
+    @FXML
+    private ProgressIndicator progress;
     
-    private ReadOnlyObjectWrapper<File> gameFile = new ReadOnlyObjectWrapper<>(null);
+    private final SimpleBooleanProperty building = new SimpleBooleanProperty(false);
+    private final ReadOnlyObjectWrapper<File> gameFile = new ReadOnlyObjectWrapper<>(null);
     
     @FXML
     private void handleButtonFile(ActionEvent event) {
@@ -62,36 +62,35 @@ public class GuiController implements Initializable {
     }
     @FXML
     private void handleButtonBuild(ActionEvent event) {
-        Path gamePath = Paths.get(this.gameFile.getValue().getPath());
-        String fileName = gamePath.getFileName().toString();
-        Path gsetupPath = Paths.get(gamePath.getParent().toString(), fileName.substring(0, fileName.lastIndexOf(".")).concat(".gsetup"));
-        
-        try {
-            Files.deleteIfExists(gsetupPath);
-            Files.createFile(gsetupPath);
-        } catch (IOException ex) {
-            Logger.getLogger(GuiController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try(BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(gsetupPath.toString())))){
-            bw.write(this.titleField.getText());
-            bw.write(System.lineSeparator());
-            bw.write(gamePath.getFileName().toString());
-            bw.write(System.lineSeparator());
-            bw.write(this.descriptionArea.getText());
-            bw.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(GuiController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Task<Void> gsetupBuild = new GsetupTask(this.titleField.getText(), this.descriptionArea.getText(), this.gameFile.getValue());
+        this.building.setValue(true);
+        gsetupBuild.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent t) {
+                GuiController.this.building.setValue(false);
+            }
+        });
+        gsetupBuild.setOnFailed(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent t) {
+                GuiController.this.building.setValue(false);
+            }
+        });
+        new Thread(gsetupBuild).start();
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.titleField.disableProperty().bind(this.fileField.textProperty().isEqualTo(""));
-        this.descriptionArea.disableProperty().bind(this.fileField.textProperty().isEqualTo(""));
+        this.titleField.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
+                                              this.building));
+        this.descriptionArea.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
+                                              this.building));
+        this.openButton.disableProperty().bind(this.building);
         this.genButton.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
                                               this.titleField.textProperty().isEqualTo("").or(
-                                              this.descriptionArea.textProperty().isEqualTo(""))));
+                                              this.descriptionArea.textProperty().isEqualTo("").or(
+                                              this.building))));
+        this.progress.visibleProperty().bind(this.building);
         
         this.gameFile.addListener(new ChangeListener<File>() {
             @Override
