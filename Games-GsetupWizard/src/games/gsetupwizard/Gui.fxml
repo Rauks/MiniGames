@@ -6,9 +6,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="games.gsetupwizard.GuiController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
+<AnchorPane id="AnchorPane" prefHeight="240.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="games.gsetupwizard.GuiController">
+  <children>
+    <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <children>
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <Label text="Fichier .jar du jeu :">
+              <labelFor>
+                <TextField fx:id="fileField" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+              </labelFor>
+            </Label>
+            <HBox prefHeight="-1.0" prefWidth="-1.0" spacing="4.0">
+              <children>
+                <fx:reference source="fileField" />
+                <Button mnemonicParsing="false" onAction="#handleButtonFile" text="Parcourir..." translateX="-1.0" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <Label text="Titre du jeu :">
+              <labelFor>
+                <TextField fx:id="titleField" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="-1.0" />
+              </labelFor>
+            </Label>
+            <fx:reference source="titleField" />
+          </children>
+        </VBox>
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <Label text="Description du jeu :">
+              <labelFor>
+                <TextArea fx:id="descriptionArea" prefWidth="-1.0" wrapText="true" VBox.vgrow="ALWAYS" />
+              </labelFor>
+            </Label>
+            <fx:reference source="descriptionArea" />
+          </children>
+        </VBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Button mnemonicParsing="false" onAction="#handleButtonBuild" text="Générer le .gsetup" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </children>
 </AnchorPane>
