@@ -29,7 +29,7 @@
           <children>
             <Label text="Titre du jeu :">
               <labelFor>
-                <TextField fx:id="titleField" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="-1.0" />
+                <TextField fx:id="titleField" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="-1.0" />
               </labelFor>
             </Label>
             <fx:reference source="titleField" />
