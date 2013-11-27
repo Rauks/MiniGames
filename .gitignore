@@ -20,7 +20,7 @@
 /Games-Launcher/*.db
 /Games-Launcher/*.db.bak
 /Games-Launcher/games/*
-/Games-Launcher/games-datas/*
+/Games-Launcher/games-data/*
 
 # Office temp files #
 ~$*
