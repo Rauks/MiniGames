@@ -89,16 +89,9 @@ public class GameManager {
     }
 
     public void launchGame(final GameModel game) throws IOException {
-        if (!Files.isDirectory(GAME_RUN_DIRECTORY)) {
-            Files.createDirectory(GAME_RUN_DIRECTORY);
-        }
-
         Path gameFile = FileSystems.getDefault().getPath(game.getPath());
-
         Path runPath = FileSystems.getDefault().getPath(GAME_RUN_DIRECTORY.toString(), game.getUuid());
-        if (!Files.isDirectory(runPath)) {
-            Files.createDirectory(runPath);
-        }
+        Files.createDirectories(runPath);
 
         final ProcessBuilder pb = new ProcessBuilder("java", "-Xms1024m", "-Xmx1024m", "-jar", gameFile.toAbsolutePath().toString());
         pb.directory(runPath.toAbsolutePath().toFile());
