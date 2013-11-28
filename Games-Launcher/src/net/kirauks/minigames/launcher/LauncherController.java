@@ -21,18 +21,22 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import net.kirauks.minigames.launcher.games.GameModel;
 import net.kirauks.minigames.launcher.games.OnGameFinishListener;
@@ -101,6 +105,21 @@ public class LauncherController implements Initializable {
         }
     }
     
+    private class GameListCell extends ListCell<GameModel>{
+        private GameModel game;
+        
+        @Override
+        public void updateItem(GameModel item, boolean empty) {
+            super.updateItem(item, empty);
+            this.game = item;
+            this.setText(empty ? null : item.getName());
+        }
+        
+        public GameModel getGame(){
+            return this.game;
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -122,6 +141,28 @@ public class LauncherController implements Initializable {
         });
         
         this.listGames.setItems(this.manager.gamesListProperty());
+        this.listGames.setCellFactory(new Callback<ListView<GameModel>, ListCell<GameModel>>(){
+            @Override
+            public ListCell<GameModel> call(ListView<GameModel> p) {
+                GameListCell cell = new GameListCell();
+                cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent t) {
+                        if(t.getClickCount() > 1){
+                            GameListCell target = (GameListCell) t.getSource();
+                            if(target.getGame() != null){
+                                try {
+                                    LauncherController.this.manager.launchGame(target.getGame());
+                                } catch (IOException ex) {
+                                    Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    }
+                });
+                return cell;
+            }
+        });
         
         this.gameInfoPane.visibleProperty().bind(this.selectedGame.isNotNull());
         this.menuUninstall.disableProperty().bind(this.selectedGame.isNull());
