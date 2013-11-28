@@ -16,7 +16,7 @@
       <Image url="@background.jpg" />
     </image>
   </ImageView>
-  <BorderPane snapToPixel="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+  <BorderPane opacity="0.95" snapToPixel="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <center>
       <ScrollPane fx:id="gameInfoPane" prefHeight="200.0" prefWidth="200.0">
         <content>
