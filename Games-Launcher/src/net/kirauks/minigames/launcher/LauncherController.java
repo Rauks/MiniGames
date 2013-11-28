@@ -20,14 +20,17 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -146,9 +149,14 @@ public class LauncherController implements Initializable {
                 if(newValue != null){
                     LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
                     LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
-                    LauncherController.this.gameTime.textProperty().bind(newValue.playtimeHoursProperty().asString()
-                                                                        .concat("h")
-                                                                        .concat(newValue.playtimeMinutesProperty().asString()));
+                    LauncherController.this.gameTime.textProperty().bind(
+                                new When(newValue.playtimeHoursProperty().isNotEqualTo(0))
+                                    .then(newValue.playtimeHoursProperty().asString().concat(" heures "))
+                                    .otherwise(new SimpleStringProperty(""))
+                                        .concat(new When(newValue.playtimeMinutesProperty().lessThan(10))
+                                            .then(new SimpleStringProperty("0"))
+                                            .otherwise(new SimpleStringProperty("")))
+                                        .concat(newValue.playtimeMinutesProperty().asString().concat(" minutes.")));
                     LauncherController.this.gameSplash.imageProperty().bind(newValue.splashProperty());
                 }
             }

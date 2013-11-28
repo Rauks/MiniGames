@@ -36,6 +36,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.util.Duration;
 import net.kirauks.minigames.launcher.games.tasks.LaunchTask;
 import net.kirauks.minigames.launcher.games.utils.DeleteVisitor;
 
@@ -79,7 +80,7 @@ public class GameManager {
     public GameManager() throws IOException {
         if (!DB.exists()) {
             DB.createNewFile();
-            this.writeDatabase(new ArrayList<GameModel>());
+            this.writeDatabase();
         }
         this.games.setAll(this.readDatabase());
     }
@@ -97,6 +98,7 @@ public class GameManager {
         pb.directory(runPath.toAbsolutePath().toFile());
 
         Task launcher = new LaunchTask(pb);
+        final long startTime = System.currentTimeMillis();
         launcher.setOnRunning(new EventHandler() {
             @Override
             public void handle(Event t) {
@@ -109,6 +111,12 @@ public class GameManager {
             @Override
             public void handle(Event t) {
                 if(GameManager.this.finishListener != null){
+                    game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
+                    try {
+                        GameManager.this.writeDatabase();
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     GameManager.this.finishListener.onGameFinish(game);
                 }
             }
@@ -117,6 +125,12 @@ public class GameManager {
             @Override
             public void handle(Event t) {
                 if(GameManager.this.finishListener != null){
+                    game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
+                    try {
+                        GameManager.this.writeDatabase();
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     GameManager.this.finishListener.onGameFinish(game);
                 }
             }
@@ -128,7 +142,7 @@ public class GameManager {
 
     public void installGame(GameModel game) throws IOException {
         this.games.add(game);
-        this.writeDatabase(new ArrayList<>(this.games));
+        this.writeDatabase();
     }
 
     public void installGameWithLocalCopy(Path gsetupFile) throws IOException{
@@ -189,7 +203,7 @@ public class GameManager {
 
     public void uninstallGame(GameModel game) throws IOException {
         this.games.remove(game);
-        this.writeDatabase(new ArrayList<>(this.games));
+        this.writeDatabase();
     }
 
     private synchronized ArrayList<GameModel> readDatabase() throws IOException {
@@ -202,7 +216,8 @@ public class GameManager {
         return datas;
     }
 
-    private synchronized void writeDatabase(ArrayList<GameModel> datas) throws IOException {
+    private synchronized void writeDatabase() throws IOException {
+        ArrayList<GameModel> datas = new ArrayList<>(this.games);
         Files.copy(DB.toPath(), DB_BACKUP.toPath(), StandardCopyOption.REPLACE_EXISTING);
         try (ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(DB)))) {
             oos.writeObject(datas);

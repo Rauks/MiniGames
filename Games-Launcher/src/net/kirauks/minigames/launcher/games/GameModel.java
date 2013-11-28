@@ -10,11 +10,10 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
@@ -32,8 +31,8 @@ public class GameModel implements Externalizable{
     private SimpleStringProperty path;
     private SimpleStringProperty uuid;
     private Duration playtime;
-    private SimpleDoubleProperty playtimeMinutes;
-    private SimpleDoubleProperty playtimeHours;
+    private SimpleIntegerProperty playtimeMinutes;
+    private SimpleIntegerProperty playtimeHours;
     private String splashUrl;
     private SimpleObjectProperty<Image> splash;
     
@@ -43,8 +42,8 @@ public class GameModel implements Externalizable{
         this.path = new SimpleStringProperty();
         this.uuid = new SimpleStringProperty();
         this.playtime = Duration.ZERO;
-        this.playtimeHours = new SimpleDoubleProperty(0d);
-        this.playtimeMinutes = new SimpleDoubleProperty(0d);
+        this.playtimeHours = new SimpleIntegerProperty(0);
+        this.playtimeMinutes = new SimpleIntegerProperty(0);
         this.splash = new SimpleObjectProperty<>(null);
         
     }
@@ -76,10 +75,10 @@ public class GameModel implements Externalizable{
     public ReadOnlyStringProperty uuidProperty(){
         return this.uuid;
     }
-    public ReadOnlyDoubleProperty playtimeMinutesProperty(){
+    public ReadOnlyIntegerProperty playtimeMinutesProperty(){
         return this.playtimeMinutes;
     }
-    public ReadOnlyDoubleProperty playtimeHoursProperty(){
+    public ReadOnlyIntegerProperty playtimeHoursProperty(){
         return this.playtimeHours;
     }
     public ReadOnlyObjectProperty<Image> splashProperty(){
@@ -104,8 +103,11 @@ public class GameModel implements Externalizable{
     
     public void addToPlaytime(Duration duration){
         this.playtime = this.playtime.add(duration);
-        this.playtimeMinutes.setValue(this.playtime.toMinutes());
-        this.playtimeHours.setValue(this.playtime.toHours());
+        this.updatePlaytimeValues();
+    }
+    private void updatePlaytimeValues(){
+        this.playtimeMinutes.setValue(((int)this.playtime.toMinutes()) % 60);
+        this.playtimeHours.setValue(((int)this.playtime.toHours()));
     }
     
     public String getName(){
@@ -120,10 +122,10 @@ public class GameModel implements Externalizable{
     public String getUuid(){
         return this.uuid.getValue();
     }
-    public Double getPlaytimeMinutes(){
+    public int getPlaytimeMinutes(){
         return this.playtimeMinutes.getValue();
     }
-    public Double getPlaytimeHours(){
+    public int getPlaytimeHours(){
         return this.playtimeHours.getValue();
     }
     public Image getSplash(){
@@ -136,8 +138,8 @@ public class GameModel implements Externalizable{
         oo.writeObject(this.description.getValue());
         oo.writeObject(this.path.getValue());
         oo.writeObject(this.uuid.getValue());
-        oo.writeDouble(this.getPlaytimeMinutes());
-        oo.writeDouble(this.getPlaytimeHours());
+        oo.writeInt(this.getPlaytimeMinutes());
+        oo.writeInt(this.getPlaytimeHours());
         oo.writeObject(this.splashUrl);
     }
 
@@ -147,11 +149,10 @@ public class GameModel implements Externalizable{
         this.description.setValue((String) oi.readObject());
         this.path.setValue((String) oi.readObject());
         this.uuid.setValue((String) oi.readObject());
-        double minutes = oi.readDouble();
-        double hours = oi.readDouble();
+        int minutes = oi.readInt();
+        int hours = oi.readInt();
         this.playtime = Duration.hours(hours).add(Duration.minutes(minutes));
-        this.playtimeMinutes.setValue(this.playtime.toMinutes());
-        this.playtimeHours.setValue(this.playtime.toHours());
+        this.updatePlaytimeValues();
         this.splashUrl = (String) oi.readObject();
         this.loadSplash();
     }
