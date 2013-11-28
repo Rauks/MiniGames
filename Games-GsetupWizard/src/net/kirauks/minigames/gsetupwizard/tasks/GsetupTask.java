@@ -32,11 +32,13 @@ import net.kirauks.minigames.gsetupwizard.utils.ZipVisitor;
  */
 public class GsetupTask extends Task<Void> {
     private final File gameFile;
+    private final File splashFile;
     private final String gameTitle;
     private final String gameDescription;
 
-    public GsetupTask(String gameTitle, String gameDescription, File gameFile) {
+    public GsetupTask(String gameTitle, String gameDescription, File gameFile, File splashFile) {
         this.gameFile = gameFile;
+        this.splashFile = splashFile;
         this.gameTitle = gameTitle;
         this.gameDescription = gameDescription;
     }
@@ -46,6 +48,7 @@ public class GsetupTask extends Task<Void> {
         Path gamePath = Paths.get(this.gameFile.getPath());
         Path basePath = gamePath.getParent();
         Path gameLibs = Paths.get(basePath.toString(), "lib");
+        Path gameSplash = Paths.get(this.splashFile.getPath());
         
         String gSetupFileName = gamePath.getFileName().toString();
         Path outGsetup = Paths.get(gSetupFileName.substring(0, gSetupFileName.lastIndexOf(".")).concat(".gsetup"));
@@ -73,6 +76,16 @@ public class GsetupTask extends Task<Void> {
                 if(Files.isDirectory(gameLibs)){
                     Files.walkFileTree(gameLibs, new ZipVisitor(zout, basePath));
                 }
+                
+                //Game splash
+                zout.putNextEntry(new ZipEntry("game.splash"));
+                try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(gameSplash.toFile()), BUFFER)){
+                    int read = -1;
+                    while((read = bis.read(data, 0, BUFFER)) != -1){
+                        zout.write(data, 0, read);
+                    }
+                }
+                zout.closeEntry();
                 
                 //Game metadata
                 zout.putNextEntry(new ZipEntry("game.metadata"));

@@ -79,7 +79,7 @@ public class GuiController implements Initializable {
     }
     @FXML
     private void handleButtonBuild(ActionEvent event) {
-        Task<Void> gsetupBuild = new GsetupTask(this.titleField.getText(), this.descriptionArea.getText(), this.gameFile.getValue());
+        Task<Void> gsetupBuild = new GsetupTask(this.titleField.getText(), this.descriptionArea.getText(), this.gameFile.getValue(), this.splashFile.getValue());
         this.building.setValue(true);
         gsetupBuild.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
