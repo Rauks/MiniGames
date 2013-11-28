@@ -27,12 +27,12 @@ public class GameLauncher extends Application {
         controller.setStage(stage);
         
         Scene scene = new Scene(root);
+        stage.setResizable(false);
+        stage.show();
         scene.getStylesheets().add(GameLauncher.class.getResource("style.css").toURI().toString());
         
         stage.setScene(scene);
         stage.setTitle("Games Launcher");
-        stage.setResizable(false);
-        stage.show();
     }
 
     /**
