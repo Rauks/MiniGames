@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -49,6 +50,8 @@ public class LauncherController implements Initializable {
     private Button gameStart;
     @FXML
     private ScrollPane gameInfoPane;
+    @FXML
+    private MenuItem menuUninstall;
     
     @FXML
     private ListView listGames;
@@ -75,7 +78,13 @@ public class LauncherController implements Initializable {
     }
     @FXML
     private void handleMenuUninstall(ActionEvent event) {
-        
+        GameModel game = this.selectedGame.getValue();
+        this.selectedGame.setValue(null);
+        try {
+            this.manager.uninstallGameWithLocalRemove(game);
+        } catch (IOException ex) {
+            Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @FXML
@@ -110,6 +119,7 @@ public class LauncherController implements Initializable {
         this.listGames.setItems(this.manager.gamesListProperty());
         
         this.gameInfoPane.visibleProperty().bind(this.selectedGame.isNotNull());
+        this.menuUninstall.disableProperty().bind(this.selectedGame.isNull());
         
         this.listGames.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GameModel>(){
             @Override

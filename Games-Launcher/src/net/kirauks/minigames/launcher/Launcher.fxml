@@ -91,17 +91,31 @@
     <top>
       <MenuBar>
         <menus>
-          <Menu mnemonicParsing="false" text="Jeux">
+          <Menu mnemonicParsing="false" text="Options">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleMenuInstall" text="Installer">
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuInstall" text="Installer...">
                 <accelerator>
                   <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
+                <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                      <Image url="@install.png" />
+                    </image>
+                  </ImageView>
+                </graphic>
               </MenuItem>
-              <MenuItem mnemonicParsing="false" onAction="#handleMenuUninstall" text="Désinstaller">
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuUninstall" text="Désinstaller" fx:id="menuUninstall">
                 <accelerator>
                   <KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
+                <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                      <Image url="@uninstall.png" />
+                    </image>
+                  </ImageView>
+                </graphic>
               </MenuItem>
             </items>
           </Menu>

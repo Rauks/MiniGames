@@ -209,6 +209,19 @@ public class GameManager {
         this.games.remove(game);
         this.writeDatabase();
     }
+    public void uninstallGameWithLocalRemove(GameModel game) throws IOException {
+        Path installPath = Paths.get(LOCAL_GAMES_REPOSITORY.toString(), game.getUuid());
+        Path sandboxPath = Paths.get(GAME_RUN_DIRECTORY.toString(), game.getUuid());
+        
+        if(Files.exists(installPath)){
+            Files.walkFileTree(installPath, new DeleteVisitor());
+        }
+        if(Files.exists(sandboxPath)){
+            Files.walkFileTree(sandboxPath, new DeleteVisitor());
+        }
+    
+        this.uninstallGame(game);
+    }
 
     private synchronized ArrayList<GameModel> readDatabase() throws IOException {
         ArrayList<GameModel> datas = null;
