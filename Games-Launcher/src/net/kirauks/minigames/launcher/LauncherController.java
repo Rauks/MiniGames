@@ -6,44 +6,26 @@
 
 package net.kirauks.minigames.launcher;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import net.kirauks.minigames.launcher.games.GameManager;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.NumberFormat;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
-import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.kirauks.minigames.launcher.games.GameModel;
@@ -149,14 +131,7 @@ public class LauncherController implements Initializable {
                 if(newValue != null){
                     LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
                     LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
-                    LauncherController.this.gameTime.textProperty().bind(
-                                new When(newValue.playtimeHoursProperty().isNotEqualTo(0))
-                                    .then(newValue.playtimeHoursProperty().asString().concat(" heures "))
-                                    .otherwise(new SimpleStringProperty(""))
-                                        .concat(new When(newValue.playtimeMinutesProperty().lessThan(10))
-                                            .then(new SimpleStringProperty("0"))
-                                            .otherwise(new SimpleStringProperty("")))
-                                        .concat(newValue.playtimeMinutesProperty().asString().concat(" minutes.")));
+                    LauncherController.this.gameTime.textProperty().bind(newValue.playtimeStringProperty());
                     LauncherController.this.gameSplash.imageProperty().bind(newValue.splashProperty());
                 }
             }
