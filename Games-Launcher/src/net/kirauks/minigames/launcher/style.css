@@ -1,0 +1,14 @@
+.text-area {
+    -fx-background-insets: 0, 0, 1;
+}
+.text-area:focused {
+    -fx-background-color: transparent, -fx-text-box-border, -fx-control-inner-background;
+}
+
+.list-view:focused {
+    -fx-background-color: transparent, -fx-box-border, -fx-control-inner-background;
+}
+
+.scroll-pane:focused {
+    -fx-background-color: transparent, -fx-box-border, -fx-background;
+}

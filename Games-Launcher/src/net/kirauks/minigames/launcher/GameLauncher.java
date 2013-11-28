@@ -27,6 +27,7 @@ public class GameLauncher extends Application {
         controller.setStage(stage);
         
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(GameLauncher.class.getResource("style.css").toURI().toString());
         
         stage.setScene(scene);
         stage.setTitle("Games Launcher");
