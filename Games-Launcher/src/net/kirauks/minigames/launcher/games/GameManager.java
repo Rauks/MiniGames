@@ -45,7 +45,7 @@ import net.kirauks.minigames.launcher.games.utils.DeleteVisitor;
  * @author Karl
  */
 public class GameManager {
-
+    private final static Path GAME_SPLASH_FILE = Paths.get("game.splash");
     private final static Path GAME_METADATA_FILE = Paths.get("game.metadata");
     private final static Path GAME_RUN_FILE = Paths.get("game.jar");
     private final static Path GAME_RUN_DIRECTORY = Paths.get("games-data");
@@ -178,8 +178,12 @@ public class GameManager {
                 throw new IOException("Unreachable game metadatas.");
             }
             Path gamePath = Paths.get(installPath.toString(), GAME_RUN_FILE.toString());
-            if(!Files.isRegularFile(metaDatas)){
+            if(!Files.isRegularFile(gamePath)){
                 throw new IOException("Unreachable game executable.");
+            }
+            Path splashPath = Paths.get(installPath.toString(), GAME_SPLASH_FILE.toString());
+            if(!Files.isRegularFile(splashPath)){
+                throw new IOException("Unreachable game splash.");
             }
             
             String titleStr;
@@ -193,7 +197,7 @@ public class GameManager {
             }
             
             Files.deleteIfExists(metaDatas);
-            this.installGame(new GameModel(titleStr, descStr.toString(), gamePath.toString(), null, gameUUID));
+            this.installGame(new GameModel(titleStr, descStr.toString(), gamePath.toString(), splashPath.toString(), gameUUID));
             
         } catch (IOException ex) {
             Files.walkFileTree(installPath, new DeleteVisitor());

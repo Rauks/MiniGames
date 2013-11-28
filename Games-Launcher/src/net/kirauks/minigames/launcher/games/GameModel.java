@@ -7,6 +7,7 @@
 package net.kirauks.minigames.launcher.games;
 
 import java.io.Externalizable;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -59,7 +60,7 @@ public class GameModel implements Externalizable{
     
     private void loadSplash(){
         if(this.splashUrl != null){
-            this.splash.setValue(new Image(this.splashUrl));
+            this.splash.setValue(new Image(new File(this.splashUrl).toURI().toString()));
         }
     }
     
