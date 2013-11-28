@@ -35,11 +35,15 @@ public class GuiController implements Initializable {
     @FXML
     private TextField fileField;
     @FXML
+    private TextField splashField;
+    @FXML
     private TextField titleField;
     @FXML
     private TextArea descriptionArea;
     @FXML
     private Button openButton;
+    @FXML
+    private Button openSplashButton;
     @FXML
     private Button genButton;
     @FXML
@@ -47,6 +51,7 @@ public class GuiController implements Initializable {
     
     private final SimpleBooleanProperty building = new SimpleBooleanProperty(false);
     private final ReadOnlyObjectWrapper<File> gameFile = new ReadOnlyObjectWrapper<>(null);
+    private final ReadOnlyObjectWrapper<File> splashFile = new ReadOnlyObjectWrapper<>(null);
     
     @FXML
     private void handleButtonFile(ActionEvent event) {
@@ -58,6 +63,18 @@ public class GuiController implements Initializable {
         File gameJar = chooser.showOpenDialog(this.getStage().getScene().getWindow());
         if(gameJar != null && gameJar.canRead()){
             this.gameFile.setValue(gameJar);
+        }
+    }
+    @FXML
+    private void handleButtonSplashFile(ActionEvent event) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Choix de l'image");
+        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image", "*.jpg"));
+        
+        File gameJar = chooser.showOpenDialog(this.getStage().getScene().getWindow());
+        if(gameJar != null && gameJar.canRead()){
+            this.splashFile.setValue(gameJar);
         }
     }
     @FXML
@@ -86,10 +103,12 @@ public class GuiController implements Initializable {
         this.descriptionArea.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
                                               this.building));
         this.openButton.disableProperty().bind(this.building);
+        this.openSplashButton.disableProperty().bind(this.building);
         this.genButton.disableProperty().bind(this.fileField.textProperty().isEqualTo("").or(
+                                              this.splashField.textProperty().isEqualTo("").or(
                                               this.titleField.textProperty().isEqualTo("").or(
                                               this.descriptionArea.textProperty().isEqualTo("").or(
-                                              this.building))));
+                                              this.building)))));
         this.progress.visibleProperty().bind(this.building);
         
         this.gameFile.addListener(new ChangeListener<File>() {
@@ -98,6 +117,15 @@ public class GuiController implements Initializable {
                 GuiController.this.fileField.setText(null);
                 if(newFile != null){
                     GuiController.this.fileField.textProperty().set(newFile.getAbsolutePath());
+                }
+            }
+        });
+        this.splashFile.addListener(new ChangeListener<File>() {
+            @Override
+            public void changed(ObservableValue<? extends File> ov, File oldFile, File newFile) {
+                GuiController.this.splashField.setText(null);
+                if(newFile != null){
+                    GuiController.this.splashField.textProperty().set(newFile.getAbsolutePath());
                 }
             }
         });

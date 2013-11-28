@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="240.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="net.kirauks.minigames.gsetupwizard.GuiController">
+<AnchorPane id="AnchorPane" prefHeight="340.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="net.kirauks.minigames.gsetupwizard.GuiController">
   <children>
     <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
       <children>
@@ -21,6 +21,21 @@
               <children>
                 <fx:reference source="fileField" />
                 <Button fx:id="openButton" mnemonicParsing="false" onAction="#handleButtonFile" text="Parcourir..." translateX="-1.0" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <Label text="Image : (JPG @ 150x593)">
+              <labelFor>
+                <TextField id="fileField" fx:id="splashField" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+              </labelFor>
+            </Label>
+            <HBox prefHeight="-1.0" prefWidth="-1.0" spacing="4.0">
+              <children>
+                <fx:reference source="splashField" />
+                <Button id="openButton" fx:id="openSplashButton" mnemonicParsing="false" onAction="#handleButtonSplashFile" text="Parcourir..." translateX="-1.0" />
               </children>
             </HBox>
           </children>
