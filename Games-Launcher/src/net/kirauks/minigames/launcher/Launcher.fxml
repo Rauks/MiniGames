@@ -22,9 +22,9 @@
         <content>
           <VBox alignment="TOP_LEFT" maxWidth="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" spacing="5.0">
             <children>
-              <Label fx:id="gameTitle" text="" textAlignment="LEFT">
+              <Label fx:id="gameTitle" alignment="CENTER" contentDisplay="LEFT" prefWidth="593.0" text="" textAlignment="CENTER">
                 <font>
-                  <Font size="30.0" />
+                  <Font name="System Bold" size="30.0" />
                 </font>
               </Label>
               <ImageView fx:id="gameSplash" fitHeight="150.0" fitWidth="593.0" pickOnBounds="true" preserveRatio="true" />
