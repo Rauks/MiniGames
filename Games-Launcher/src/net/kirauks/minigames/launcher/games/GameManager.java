@@ -112,6 +112,7 @@ public class GameManager {
             public void handle(Event t) {
                 if(GameManager.this.finishListener != null){
                     game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
+                    game.updateLastPlay();
                     try {
                         GameManager.this.writeDatabase();
                     } catch (IOException ex) {
@@ -126,6 +127,7 @@ public class GameManager {
             public void handle(Event t) {
                 if(GameManager.this.finishListener != null){
                     game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
+                    game.updateLastPlay();
                     try {
                         GameManager.this.writeDatabase();
                     } catch (IOException ex) {
