@@ -37,6 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import net.kirauks.javafx.dialog.Dialog;
 import net.kirauks.minigames.launcher.games.GameModel;
 import net.kirauks.minigames.launcher.games.OnGameFinishListener;
 import net.kirauks.minigames.launcher.games.OnGameStartListener;
@@ -79,20 +80,30 @@ public class LauncherController implements Initializable {
         if(installer != null && installer.canRead()){
             try {
                 this.manager.installGameWithLocalCopy(Paths.get(installer.toURI()));
+                new Dialog("Installation terminée.", Dialog.DialogType.INFORMATION, Dialog.DialogOptions.OK, this.getStage()).showAndWait();
             } catch (IOException ex) {
                 Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+                new Dialog("Erreur d'installation.", Dialog.DialogType.ERROR, Dialog.DialogOptions.OK, this.getStage()).showAndWait();
             }
         }
     }
     @FXML
     private void handleMenuUninstall(MouseEvent event) {
-        GameModel game = this.selectedGame.getValue();
-        this.selectedGame.setValue(null);
-        try {
-            this.manager.uninstallGameWithLocalRemove(game);
-        } catch (IOException ex) {
-            Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        final GameModel game = this.selectedGame.getValue();
+        new Dialog("Etes vous sur de vouloir désinstaller \"" + game.getName() + "\" ?", new Dialog.DialogListener() {
+            @Override
+            public void onResponse(Dialog.DialogResponse response) {
+                if(response == Dialog.DialogResponse.YES){
+                    try {
+                        LauncherController.this.selectedGame.setValue(null);
+                        LauncherController.this.manager.uninstallGameWithLocalRemove(game);
+                    } catch (IOException ex) {
+                        Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+                        new Dialog("Erreur de désinstallation.", Dialog.DialogType.ERROR, Dialog.DialogOptions.OK, LauncherController.this.getStage()).showAndWait();
+                    }
+                }
+            }
+        }, Dialog.DialogType.QUESTION, Dialog.DialogOptions.YES_NO, this.getStage()).showAndWait();
     }
     
     @FXML
@@ -101,6 +112,7 @@ public class LauncherController implements Initializable {
             this.manager.launchGame(this.selectedGame.getValue());
         } catch (IOException ex) {
             Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+            new Dialog("Erreur de lancement du jeu.", Dialog.DialogType.ERROR, Dialog.DialogOptions.OK, LauncherController.this.getStage()).showAndWait();
         }
     }
     
@@ -154,6 +166,7 @@ public class LauncherController implements Initializable {
                                     LauncherController.this.manager.launchGame(target.getGame());
                                 } catch (IOException ex) {
                                     Logger.getLogger(LauncherController.class.getName()).log(Level.SEVERE, null, ex);
+                                    new Dialog("Erreur de lancement du jeu.", Dialog.DialogType.ERROR, Dialog.DialogOptions.OK, LauncherController.this.getStage()).showAndWait();
                                 }
                             }
                         }
