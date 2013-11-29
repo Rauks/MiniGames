@@ -34,6 +34,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -58,9 +59,7 @@ public class LauncherController implements Initializable {
     @FXML
     private Button gameStart;
     @FXML
-    private ScrollPane gameInfoPane;
-    @FXML
-    private MenuItem menuUninstall;
+    private VBox gameInfoPane;
     
     @FXML
     private ListView listGames;
@@ -70,7 +69,7 @@ public class LauncherController implements Initializable {
     
     
     @FXML
-    private void handleMenuInstall(ActionEvent event) {
+    private void handleMenuInstall(MouseEvent event) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Installation");
         chooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -86,7 +85,7 @@ public class LauncherController implements Initializable {
         }
     }
     @FXML
-    private void handleMenuUninstall(ActionEvent event) {
+    private void handleMenuUninstall(MouseEvent event) {
         GameModel game = this.selectedGame.getValue();
         this.selectedGame.setValue(null);
         try {
@@ -165,7 +164,6 @@ public class LauncherController implements Initializable {
         });
         
         this.gameInfoPane.visibleProperty().bind(this.selectedGame.isNotNull());
-        this.menuUninstall.disableProperty().bind(this.selectedGame.isNull());
         
         final Glow glow = new Glow();
         glow.setLevel(0.0);

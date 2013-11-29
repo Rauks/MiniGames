@@ -41,6 +41,7 @@ public class GameModel implements Externalizable{
         this.uuid = new SimpleStringProperty();
         this.playtime = Duration.ZERO;
         this.playtimeString = new SimpleStringProperty();
+        this.updatePlaytimeString();
         this.splash = new SimpleObjectProperty<>(null);
         
     }
