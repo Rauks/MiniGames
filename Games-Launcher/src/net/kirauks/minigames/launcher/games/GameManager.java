@@ -102,6 +102,7 @@ public class GameManager {
         launcher.setOnRunning(new EventHandler() {
             @Override
             public void handle(Event t) {
+                game.updateLastPlay();
                 if(GameManager.this.startListener != null){
                     GameManager.this.startListener.onGameStart(game);
                 }
@@ -110,9 +111,8 @@ public class GameManager {
         launcher.setOnSucceeded(new EventHandler() {
             @Override
             public void handle(Event t) {
+                game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
                 if(GameManager.this.finishListener != null){
-                    game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
-                    game.updateLastPlay();
                     try {
                         GameManager.this.writeDatabase();
                     } catch (IOException ex) {
@@ -125,9 +125,8 @@ public class GameManager {
         launcher.setOnFailed(new EventHandler() {
             @Override
             public void handle(Event t) {
+                game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
                 if(GameManager.this.finishListener != null){
-                    game.addToPlaytime(Duration.millis(System.currentTimeMillis() - startTime));
-                    game.updateLastPlay();
                     try {
                         GameManager.this.writeDatabase();
                     } catch (IOException ex) {

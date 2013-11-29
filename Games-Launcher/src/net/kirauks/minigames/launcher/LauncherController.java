@@ -28,8 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
@@ -54,6 +52,8 @@ public class LauncherController implements Initializable {
     private Label gameTitle;
     @FXML
     private Label gameTime;
+    @FXML
+    private Label gameLastTime;
     @FXML
     private ImageView gameSplash;
     @FXML
@@ -192,11 +192,13 @@ public class LauncherController implements Initializable {
                 LauncherController.this.gameTitle.textProperty().unbind();
                 LauncherController.this.gameDescription.textProperty().unbind();
                 LauncherController.this.gameTime.textProperty().unbind();
+                LauncherController.this.gameLastTime.textProperty().unbind();
                 LauncherController.this.gameSplash.imageProperty().unbind();
                 if(newValue != null){
                     LauncherController.this.gameTitle.textProperty().bind(newValue.nameProperty());
                     LauncherController.this.gameDescription.textProperty().bind(newValue.descriptionProperty());
                     LauncherController.this.gameTime.textProperty().bind(newValue.playtimeStringProperty());
+                    LauncherController.this.gameLastTime.textProperty().bind(newValue.lastplayStringProperty());
                     LauncherController.this.gameSplash.imageProperty().bind(newValue.splashProperty());
                 }
             }

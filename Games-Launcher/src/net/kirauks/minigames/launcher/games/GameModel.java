@@ -173,15 +173,15 @@ public class GameModel implements Externalizable{
                 else{
                     sb.append(" minutes");
                 }
-                this.lastplayString.setValue("il y a " + sb.toString());
+                this.lastplayString.setValue("Il y a " + sb.toString());
             }
             else if(delta.lessThan(Duration.hours(48))){
                 SimpleDateFormat hoursFormat = new SimpleDateFormat ("HH'h'mm");
-                this.lastplayString.setValue("hier à " + hoursFormat.format(this.lastplay));
+                this.lastplayString.setValue("Hier à " + hoursFormat.format(this.lastplay));
             }
             else{
                 SimpleDateFormat dateFormat = new SimpleDateFormat ("dd/M/yyyy 'à' HH'h'mm");
-                this.lastplayString.setValue("le " + dateFormat.format(this.lastplay));
+                this.lastplayString.setValue("Le " + dateFormat.format(this.lastplay));
             }
         }
     }

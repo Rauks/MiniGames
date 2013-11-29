@@ -43,24 +43,39 @@
                   <TextArea fx:id="gameDescription" editable="false" maxWidth="-1.0" prefHeight="318.0" prefWidth="593.0" text="" wrapText="true" />
                   <HBox id="HBox" alignment="CENTER" spacing="5.0">
                     <children>
-                      <HBox prefHeight="-1.0" prefWidth="-1.0" spacing="3.0" HBox.hgrow="ALWAYS">
+                      <VBox id="VBox" alignment="TOP_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
                         <children>
-                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                              <Image url="@clock.png" />
-                            </image>
-                          </ImageView>
-                          <Label text="Temps de jeu :" />
-                          <Label fx:id="gameTime" text="" />
+                          <HBox prefHeight="-1.0" prefWidth="-1.0" spacing="3.0">
+                            <children>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                  <Image url="@clock.png" />
+                                </image>
+                              </ImageView>
+                              <Label text="Temps de jeu :" />
+                              <Label fx:id="gameTime" text="" />
+                            </children>
+                            <padding>
+                              <Insets />
+                            </padding>
+                          </HBox>
+                          <HBox prefHeight="-1.0" prefWidth="-1.0" spacing="3.0">
+                            <children>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                  <Image url="@calendar.png" />
+                                </image>
+                              </ImageView>
+                              <Label text="Dernier lancement :" />
+                              <Label id="gameTime" fx:id="gameLastTime" text="" />
+                            </children>
+                            <padding>
+                              <Insets />
+                            </padding>
+                          </HBox>
                         </children>
-                        <padding>
-                          <Insets />
-                        </padding>
-                        <HBox.margin>
-                          <Insets left="1.0" />
-                        </HBox.margin>
-                      </HBox>
-                      <HBox id="HBox" alignment="CENTER_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
+                      </VBox>
+                      <HBox id="HBox" alignment="CENTER_RIGHT" spacing="5.0">
                         <children>
                           <Button fx:id="gameStart" alignment="CENTER" mnemonicParsing="false" onAction="#handleMenuGameStart" prefWidth="150.0" text="Jouer" textFill="BLACK">
                             <font>
