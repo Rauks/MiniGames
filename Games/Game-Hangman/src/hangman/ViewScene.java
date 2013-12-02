@@ -44,6 +44,8 @@ public class ViewScene extends Parent {
     private Label count = new Label("0");
     private Label wordGuess = new Label(" ");
     private Label ResultWinLoseLabel = new Label("Turns still : " + Integer.toString(levelController.getMax_choose()));
+    private Label helpStringLabel = new Label(" ");
+        
 
     private GridPane grid = new GridPane();
 
@@ -51,7 +53,7 @@ public class ViewScene extends Parent {
     Button level2 = new Button();
     Button level3 = new Button();
     Button abandon = new Button();
-
+    Button help = new Button();
     DialogBox d;
 
     public ViewScene() {
@@ -65,17 +67,31 @@ public class ViewScene extends Parent {
 
         textLabelChoose.setTranslateY(100);
         textLabelChoose.setTranslateX(350);
-
+        
+       
+        help.setText("Help");
+        help.setTranslateX(650);
+        help.setTranslateY(50);
+        
+        this.getChildren().add(help);
+         help.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               helpStringLabel.setText(levelController.getHint());
+            }
+        });
+        
         abandon.setText("Abandon");
         abandon.setTranslateX(550);
         abandon.setTranslateY(50);
         this.getChildren().add(abandon);
+        
 
         abandon.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 d = new DialogBox("Abandon");
-                System.out.println(" caca " + d.isAbandonGame());
+                System.out.println(" isAbandon " + d.isAbandonGame());
                 if (d.isAbandonGame()) {
                     playAgain();
                    
@@ -158,6 +174,11 @@ public class ViewScene extends Parent {
 
         grid.add(letterSelectedLabelString, 1, 3);
 
+        Label helpLabel = new Label("Help : ");
+        grid.add(helpLabel,0,4);
+        
+        grid.add(helpStringLabel, 1, 4);
+        
         grid.setTranslateY(150);
         grid.setTranslateX(450);
         this.getChildren().add(grid);
@@ -247,8 +268,8 @@ public class ViewScene extends Parent {
 
     public final void keyBoardShow() {
         Rectangle keyboard = new Rectangle();
-        keyboard.setWidth(400);
-        keyboard.setHeight(200);
+        keyboard.setWidth(355);
+        keyboard.setHeight(120);
         keyboard.setArcHeight(30);
         keyboard.setArcWidth(30);
         keyboard.setFill( //on remplie notre rectangle avec un dégradé
@@ -444,6 +465,7 @@ public class ViewScene extends Parent {
                     wordGuess.setText("nothing");
                     count.setText("0");
                     letterSelectedLabelString.setText(" ");
+                    helpStringLabel.setText(" ");
                     manInit(Color.WHITE, 6);
                     manInit(Color.web("000000"), 1);
                     for (final TouchKeyboard touch : touches) {

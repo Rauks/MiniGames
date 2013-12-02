@@ -15,6 +15,8 @@ import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -52,7 +54,16 @@ public class DialogBox extends Stage {
 
     public DialogBox(String msg) {
 
-        this.initModality(Modality.WINDOW_MODAL);
+        this.initModality(Modality.APPLICATION_MODAL);
+       //this.initModality(Modality.WINDOW_MODAL);
+        //this.initStyle(StageStyle.UTILITY);
+                this.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          @Override
+          public void handle(WindowEvent we) {
+              System.out.println("Stage is closing");
+              setAbandonGame(false);
+          }
+      }); 
         this.sizeToScene();
         this.setScene(new Scene(VBoxBuilder.create().children(new Text(msg), btOK, btCancel).
                 alignment(Pos.CENTER).padding(new Insets(5)).build()));

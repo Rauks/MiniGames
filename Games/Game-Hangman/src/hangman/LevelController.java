@@ -6,7 +6,6 @@
 package hangman;
 
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  *
@@ -17,7 +16,7 @@ public class LevelController {
     private int level_default = 1;
     // Play_Game obj = new Play_Game();
     private String word = "";
-    Random rand = new Random();
+    Random rand = new Random(System.currentTimeMillis());
     private String hint = "";
     private String guess_word = "";
     private String CharsProposed = "";
@@ -52,6 +51,7 @@ public class LevelController {
     public final void Start(int level_default) {
         String words[] = new String[5];
         String hints[] = new String[5];
+        System.out.println("level choose "+level_default);
         switch (level_default) {
             case 1:
                 words[0] = "cat";
@@ -64,6 +64,8 @@ public class LevelController {
                 hints[3] = "Meals";
                 words[4] = "telephone";
                 hints[4] = "Communication";
+                break;
+                
             case 2:
                 words[0] = "mixture";
                 hints[0] = "Noun";
@@ -75,6 +77,8 @@ public class LevelController {
                 hints[3] = "Building";
                 words[4] = "plant";
                 hints[4] = "Think grass, tree, flower, etc.";
+                break;
+                
             case 3:
                 words[0] = "pen";
                 hints[0] = "Office tool.";
@@ -86,7 +90,10 @@ public class LevelController {
                 hints[3] = "You can pass it around.";
                 words[4] = "fog";
                 hints[4] = "Form of percipitation.";
-
+                break;
+        }
+        for (String word1 : words) {
+            System.out.println("" + word1);
         }
         //init random
         int int_random = this.rand.nextInt(5);
