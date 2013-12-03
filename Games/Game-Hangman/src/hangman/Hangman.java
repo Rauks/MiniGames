@@ -34,9 +34,10 @@ public class Hangman extends Application {
         v.setLayoutX(0);
         v.setLayoutY(0);
         
-
-        
-        
+       
+      // FileWord fff= new FileWord("C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\Game-Hangman\\src\\Files\\Dictionnary.txt");
+      //  fff.SplitDicoFile("C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\Game-Hangman\\src\\Files\\Dictionnary.txt");
+       
         root.getChildren().add(v);
         
 

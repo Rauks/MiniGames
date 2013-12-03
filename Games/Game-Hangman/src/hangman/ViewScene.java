@@ -77,7 +77,7 @@ public class ViewScene extends Parent {
          help.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               helpStringLabel.setText(levelController.getHint());
+               helpStringLabel.setText(levelController.getWord());
             }
         });
         
@@ -314,7 +314,8 @@ public class ViewScene extends Parent {
             new TouchKeyboard("C", (int) keyboard.getTranslateX() + 70 + 5, (int) keyboard.getTranslateY() + 80 - 5, "c"),
             new TouchKeyboard("V", (int) keyboard.getTranslateX() + 105 + 5, (int) keyboard.getTranslateY() + 80 - 5, "v"),
             new TouchKeyboard("B", (int) keyboard.getTranslateX() + 140 + 5, (int) keyboard.getTranslateY() + 80 - 5, "b"),
-            new TouchKeyboard("N", (int) keyboard.getTranslateX() + 175 + 5, (int) keyboard.getTranslateY() + 80 - 5, "n"),};
+            new TouchKeyboard("N", (int) keyboard.getTranslateX() + 175 + 5, (int) keyboard.getTranslateY() + 80 - 5, "n"),
+            new TouchKeyboard("-", (int) keyboard.getTranslateX() + 210 + 5, (int) keyboard.getTranslateY() + 80 - 5, "-"),};
 
         this.getChildren().add(keyboard);
         this.getChildren().addAll(Arrays.asList(touches));

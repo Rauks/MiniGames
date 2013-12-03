@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package hangman;
-
-import java.util.Random;
-
 /**
  *
  * @author Laetitia
@@ -14,10 +11,7 @@ import java.util.Random;
 public class LevelController {
 
     private int level_default = 1;
-    // Play_Game obj = new Play_Game();
     private String word = "";
-    Random rand = new Random(System.currentTimeMillis());
-    private String hint = "";
     private String guess_word = "";
     private String CharsProposed = "";
     private String guess_wordChartoString = "";
@@ -30,6 +24,11 @@ public class LevelController {
     private char word_Char[];
 
     private DialogBox d;
+
+    private FileWord fw;
+    private final String nameFileWord_1_2_3 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\Game-Hangman\\src\\Files\\Word_1_2_3.txt";
+    private final String nameFileWord_4_5_6 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\Game-Hangman\\src\\Files\\Word_4_5_6.txt";
+    private final String nameFileWord_7 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\Game-Hangman\\src\\Files\\Word_7.txt";
 
     LevelController(int _Level) {
         level_default = _Level;
@@ -49,64 +48,27 @@ public class LevelController {
     }
 
     public final void Start(int level_default) {
-        String words[] = new String[5];
-        String hints[] = new String[5];
-        System.out.println("level choose "+level_default);
+
+        System.out.println("level choose " + level_default);
         switch (level_default) {
             case 1:
-                words[0] = "cat";
-                hints[0] = "Animal";
-                words[1] = "dog";
-                hints[1] = "Animal";
-                words[2] = "book";
-                hints[2] = "Reading";
-                words[3] = "breakfeast";
-                hints[3] = "Meals";
-                words[4] = "telephone";
-                hints[4] = "Communication";
+                fw = new FileWord(nameFileWord_1_2_3);
                 break;
-                
+
             case 2:
-                words[0] = "mixture";
-                hints[0] = "Noun";
-                words[1] = "music";
-                hints[1] = "Form of Expression";
-                words[2] = "animal";
-                hints[2] = "Think cat, dog, tiger, etc.";
-                words[3] = "school";
-                hints[3] = "Building";
-                words[4] = "plant";
-                hints[4] = "Think grass, tree, flower, etc.";
+                fw = new FileWord(nameFileWord_4_5_6);
                 break;
-                
             case 3:
-                words[0] = "pen";
-                hints[0] = "Office tool.";
-                words[1] = "pencil";
-                hints[1] = "Office tool.";
-                words[2] = "paper";
-                hints[2] = "Office tool.";
-                words[3] = "note";
-                hints[3] = "You can pass it around.";
-                words[4] = "fog";
-                hints[4] = "Form of percipitation.";
+                fw = new FileWord(nameFileWord_7);
                 break;
         }
-        for (String word1 : words) {
-            System.out.println("" + word1);
-        }
-        //init random
-        int int_random = this.rand.nextInt(5);
-        //choose word to guess
-        this.word = words[int_random];
-        //choose hint 
+        this.word = fw.getWord();
+       
         System.out.println("word - chooosen : " + this.word);
-        this.hint = hints[int_random];
-        System.out.println("hint - chooosen : " + this.hint);
 
         //create guess_word
         for (int i = 0; i < this.word.length(); i++) {
-            this.guess_word = this.guess_word + "-";
+            this.guess_word = this.guess_word + "_";
         }
         System.out.println("word  : " + this.guess_word);
         InitGuess();
@@ -121,8 +83,8 @@ public class LevelController {
             //create a char [] of guess_word ----- and word "paulo"
             this.guess_word_Char = this.guess_word.toCharArray();
             this.word_Char = this.word.toCharArray();
-            System.out.println("InitGuess :" + this.guess_word_Char);
-            System.out.println("InitGuess :" + this.word_Char);
+            //System.out.println("InitGuess :" + this.guess_word_Char);
+            //System.out.println("InitGuess :" + this.word_Char);
         }
 
     }
@@ -205,14 +167,6 @@ public class LevelController {
         this.guess_wordChartoString = guess_wordChartoString;
     }
 
-    public String getHint() {
-        return hint;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
     public int getCount() {
         return count;
     }
@@ -235,14 +189,6 @@ public class LevelController {
 
     public void setWord(String word) {
         this.word = word;
-    }
-
-    public Random getRand() {
-        return rand;
-    }
-
-    public void setRand(Random rand) {
-        this.rand = rand;
     }
 
     public String getGuess_word() {
