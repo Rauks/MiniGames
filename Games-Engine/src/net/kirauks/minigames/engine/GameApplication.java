@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -27,29 +28,19 @@ import net.kirauks.minigames.engine.utils.Options;
  * @author Karl
  */
 public abstract class GameApplication extends Application{
-    private BorderPane pausePane = new BorderPane();
+    private static final Font FONT_PIXEL_40 = Font.loadFont(GameApplication.class.getResourceAsStream("res/Visitor.ttf"), 40);
+    
+    private final BorderPane pausePane = new BorderPane();
+    private Stage stage;
     private final static double PAUSE_OPACITY = 0.8d;
     
-    @Override
-    final public void start(Stage stage) throws Exception {
-        stage.setTitle(this.createStageTitle());
-        
+    public void setScene(Scene scene){
         StackPane rootPane = new StackPane();
-        this.pausePane.setStyle("-fx-background-color: #000000;");
-        this.pausePane.setFocusTraversable(true);
-        this.pausePane.setOpacity(0.0);
-        this.pausePane.setMouseTransparent(true);
-        Text pauseText = new Text("PAUSE");
-        pauseText.opacityProperty().bind(this.pausePane.opacityProperty().multiply(1.0d / PAUSE_OPACITY));
-        pauseText.setFill(Color.WHITE);
-        this.pausePane.setCenter(pauseText);
-        
-        Scene scene = this.createScene();
         Parent sceneRoot = scene.getRoot();
         if(sceneRoot != null){
             rootPane.getChildren().add(sceneRoot);
         }
-        rootPane.getChildren().add(pausePane);
+        rootPane.getChildren().add(this.pausePane);
         scene.setRoot(rootPane);
         
         scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
@@ -86,18 +77,36 @@ public abstract class GameApplication extends Application{
             }
             
         });
+        this.stage.setScene(scene);
+    }
+    
+    @Override
+    final public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        this.stage.setTitle(this.createStageTitle());
         
-        stage.setScene(scene);
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        this.pausePane.setStyle("-fx-background-color: #000000;");
+        this.pausePane.setFocusTraversable(true);
+        this.pausePane.setOpacity(0.0);
+        this.pausePane.setMouseTransparent(true);
+        Text pauseText = new Text("PAUSE");
+        pauseText.setFont(FONT_PIXEL_40);
+        pauseText.opacityProperty().bind(this.pausePane.opacityProperty().multiply(1.0d / PAUSE_OPACITY));
+        pauseText.setFill(Color.WHITE);
+        this.pausePane.setCenter(pauseText);
+        
+        this.setScene(this.createScene());
+        
+        this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
                 GameApplication.this.onCloseStage();
             }
         });
         
-        stage.show();
+        this.stage.show();
     }
-    
+        
     private boolean paused = false;
     FadeTransition pauseFade = new FadeTransition(Duration.seconds(0.2d), this.pausePane);
     private void togglePause() {
