@@ -34,6 +34,11 @@ public abstract class GameApplication extends Application{
     private Stage stage;
     private final static double PAUSE_OPACITY = 0.8d;
     
+    /**
+     * Change the main scene.
+     * 
+     * @param scene 
+     */
     public void setScene(Scene scene){
         StackPane rootPane = new StackPane();
         Parent sceneRoot = scene.getRoot();
@@ -83,6 +88,9 @@ public abstract class GameApplication extends Application{
     @Override
     final public void start(Stage stage) throws Exception {
         this.stage = stage;
+        
+        this.onEngineStart();
+        
         this.stage.setTitle(this.createStageTitle());
         
         this.pausePane.setStyle("-fx-background-color: #000000;");
@@ -106,6 +114,8 @@ public abstract class GameApplication extends Application{
         
         this.stage.setResizable(false);
         this.stage.show();
+        
+        this.onGameStart();
     }
         
     private boolean paused = false;
@@ -129,6 +139,13 @@ public abstract class GameApplication extends Application{
     }
     
     /**
+     * Called before the scene loading at the beginning of engine start.
+     * 
+     * @warning {@link GameApplication#setScene(javafx.scene.Scene)} must not be called a this time.
+     */
+    public abstract void onEngineStart();
+    
+    /**
      * Called on Stage creation, the returned String will be used as Stage's title.
      * 
      * @return The used stage title; 
@@ -141,6 +158,11 @@ public abstract class GameApplication extends Application{
      * @return 
      */
     public abstract Scene createScene();
+    
+    /**
+     * Called at the end of engine loading, after the scene load process.
+     */
+    public abstract void onGameStart();
     
     public abstract void onCloseStage();
     public abstract void onPauseGame();
