@@ -122,7 +122,7 @@ public class Level extends Parent{
         boolean reverseX = false;
         boolean reverseY = false;
         if(newX < Ball.RADIUS){
-            newX = -newX;
+            newX = Ball.RADIUS;
             reverseX = true;
         }
         double ballMaxX = Game.STAGE_WIDTH - Ball.RADIUS;
@@ -131,10 +131,10 @@ public class Level extends Parent{
             reverseX = true;
         }
         if(newY < Ball.RADIUS){
-            newY = -newY;
+            newY = Ball.RADIUS;
             reverseY = true;
         }
-        double ballMaxY = Game.STAGE_HEIGHT -  - Ball.RADIUS;
+        double ballMaxY = Game.STAGE_HEIGHT - Ball.RADIUS;
         if(newY > ballMaxY){
             newY = ballMaxY - (newY - ballMaxY);
             reverseY = true;
