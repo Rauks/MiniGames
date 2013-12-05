@@ -79,6 +79,18 @@ public abstract class GameApplication extends Application{
                 if(!GameApplication.this.paused && key.equals(Options.getActionKey())){
                     GameApplication.this.onActionKeyReleased();
                 }
+                else if(!GameApplication.this.paused && key.equals(Options.getUpKey())){
+                    GameApplication.this.onUpKeyReleased();
+                }
+                else if(!GameApplication.this.paused && key.equals(Options.getDownKey())){
+                    GameApplication.this.onDownKeyReleased();
+                }
+                else if(!GameApplication.this.paused && key.equals(Options.getLeftKey())){
+                    GameApplication.this.onLeftKeyReleased();
+                }
+                else if(!GameApplication.this.paused && key.equals(Options.getRightKey())){
+                    GameApplication.this.onRightKeyReleased();
+                }
             }
             
         });
@@ -171,7 +183,11 @@ public abstract class GameApplication extends Application{
     public abstract void onActionKeyPressed();
     public abstract void onActionKeyReleased();
     public abstract void onUpKeyPressed();
+    public abstract void onUpKeyReleased();
     public abstract void onDownKeyPressed();
+    public abstract void onDownKeyReleased();
     public abstract void onLeftKeyPressed();
+    public abstract void onLeftKeyReleased();
     public abstract void onRightKeyPressed();
+    public abstract void onRightKeyReleased();
 }
