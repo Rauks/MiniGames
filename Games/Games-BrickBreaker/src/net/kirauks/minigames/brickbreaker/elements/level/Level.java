@@ -121,6 +121,8 @@ public class Level extends Parent{
         double newY = this.ball.getTranslateY() + this.moveBallY;
         boolean reverseX = false;
         boolean reverseY = false;
+        
+        //Borders collisions
         if(newX < Ball.RADIUS){
             newX = Ball.RADIUS;
             reverseX = true;
@@ -138,6 +140,18 @@ public class Level extends Parent{
         if(newY > ballMaxY){
             newY = ballMaxY - (newY - ballMaxY);
             reverseY = true;
+        }
+        
+        //Bar collisions
+        if(this.moveBallY > 0 
+                && newY - Ball.RADIUS >= Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS
+                && newY - Ball.RADIUS <= Game.STAGE_HEIGHT - Bar.BASELINE //+ Bar.THICKNESS
+                && this.bar.getTranslateX() - Ball.RADIUS < newX
+                && this.bar.getTranslateX() + Bar.SIZE + Ball.RADIUS > newX){
+            reverseY = true;
+            //X deviation
+            double offset = newX + Ball.RADIUS - this.bar.getTranslateX() - (bar.SIZE / 2d);
+            this.moveBallX += offset / 5d;
         }
         
         this.ball.setTranslateX(newX);
