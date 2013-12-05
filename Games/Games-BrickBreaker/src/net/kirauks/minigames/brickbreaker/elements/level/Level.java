@@ -6,6 +6,7 @@
 
 package net.kirauks.minigames.brickbreaker.elements.level;
 
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -31,23 +32,32 @@ public class Level extends Parent{
     private double moveBar;
     private Ball ball;
     private BallState ballState;
+    private double moveBallX;
+    private double moveBallY;
     
     private Timeline timeline;
+    private Random random = new Random();
     
     public Level(){
         this.bar = new Bar();
-        this.bar.setTranslateX(Game.STAGE_WIDTH / 2d - Bar.SIZE / 2d);
-        this.bar.setTranslateY(Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d);
-        this.moveBar = 0;
-        
         this.ball = new Ball();
-        this.ball.setTranslateX(Game.STAGE_WIDTH / 2d);
-        this.ball.setTranslateY(Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d - Ball.RADIUS);
-        this.ballState = BallState.CATCHED;
+        this.resetLevel();
         
         this.getChildren().addAll(this.bar, this.ball);
         
         this.buildTimeline();
+    }
+    
+    private void resetLevel(){
+        this.bar.setTranslateX(Game.STAGE_WIDTH / 2d - Bar.SIZE / 2d);
+        this.bar.setTranslateY(Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d);
+        this.moveBar = 0;
+        
+        this.ball.setTranslateX(Game.STAGE_WIDTH / 2d);
+        this.ball.setTranslateY(Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d - Ball.RADIUS);
+        this.ballState = BallState.CATCHED;
+        this.moveBallX = (random.nextDouble() - 0.5) * Ball.SPEED_MIN;
+        this.moveBallY = -Ball.SPEED_MIN;
     }
     
     private void buildTimeline(){
@@ -59,14 +69,20 @@ public class Level extends Parent{
             public void handle(ActionEvent t) {
                 //Bar moves
                 if(Level.this.moveBar != 0){
-                    Level.this.moveBar(Level.this.bar.getTranslateX() + Level.this.moveBar);
+                    Level.this.moveBar();
+                }
+                
+                //Ball moves
+                if(Level.this.ballState == BallState.MOVING){
+                    Level.this.moveBall();
                 }
             }
         });
         this.timeline.getKeyFrames().add(k);
     }
     
-    private void moveBar(double toX){
+    private void moveBar(){
+        double toX = this.bar.getTranslateX() + this.moveBar;
         if(toX < 0){
             toX = 0;
         }
@@ -77,7 +93,7 @@ public class Level extends Parent{
         if(this.ballState == BallState.CATCHED){
             double ballX = this.ball.getTranslateX() + toX - this.bar.getTranslateX();
             if(ballX < Ball.RADIUS){
-                ballX = 0;
+                ballX = Ball.RADIUS;
             }
             double ballMax = Game.STAGE_WIDTH - Ball.RADIUS;
             if(ballX > ballMax){
@@ -93,11 +109,50 @@ public class Level extends Parent{
     }
     
     public void moveBarLeft(){
-        this.moveBar = -Bar.SPEED_X;
+        this.moveBar = -Bar.SPEED;
     }
     
     public void moveBarRight(){
-        this.moveBar = Bar.SPEED_X;
+        this.moveBar = Bar.SPEED;
+    }
+    
+    private void moveBall(){
+        double newX = this.ball.getTranslateX() + this.moveBallX;
+        double newY = this.ball.getTranslateY() + this.moveBallY;
+        boolean reverseX = false;
+        boolean reverseY = false;
+        if(newX < Ball.RADIUS){
+            newX = -newX;
+            reverseX = true;
+        }
+        double ballMaxX = Game.STAGE_WIDTH - Ball.RADIUS;
+        if(newX > ballMaxX){
+            newX = ballMaxX - (newX - ballMaxX);
+            reverseX = true;
+        }
+        if(newY < Ball.RADIUS){
+            newY = -newY;
+            reverseY = true;
+        }
+        double ballMaxY = Game.STAGE_HEIGHT -  - Ball.RADIUS;
+        if(newY > ballMaxY){
+            newY = ballMaxY - (newY - ballMaxY);
+            reverseY = true;
+        }
+        
+        this.ball.setTranslateX(newX);
+        this.ball.setTranslateY(newY);
+        
+        if(reverseX){
+            this.moveBallX = -this.moveBallX;
+        }
+        if(reverseY){
+            this.moveBallY = -this.moveBallY;
+        }
+    }
+    
+    public void launchBall(){
+        this.ballState = BallState.MOVING;
     }
     
     public void start(){

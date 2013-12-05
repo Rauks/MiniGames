@@ -88,7 +88,9 @@ public class Game extends GameApplication{
     public void onActionKeyPressed() {}
 
     @Override
-    public void onActionKeyReleased() {}
+    public void onActionKeyReleased() {
+        this.level.launchBall();
+    }
 
     @Override
     public void onUpKeyPressed() {}
