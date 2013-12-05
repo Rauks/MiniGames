@@ -104,6 +104,7 @@ public abstract class GameApplication extends Application{
             }
         });
         
+        this.stage.setResizable(false);
         this.stage.show();
     }
         
