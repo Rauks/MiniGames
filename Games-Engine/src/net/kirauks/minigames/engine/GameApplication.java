@@ -119,6 +119,7 @@ public abstract class GameApplication extends Application{
             @Override
             public void handle(WindowEvent t) {
                 GameApplication.this.onCloseStage();
+                System.exit(0);
             }
         });
         
