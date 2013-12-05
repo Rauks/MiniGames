@@ -6,10 +6,16 @@
 
 package net.kirauks.minigames.brickbreaker;
 
+import java.net.URISyntaxException;
+import java.util.logging.Logger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import net.kirauks.minigames.brickbreaker.elements.level.Level;
 import net.kirauks.minigames.engine.GameApplication;
 
 /**
@@ -17,9 +23,13 @@ import net.kirauks.minigames.engine.GameApplication;
  * @author Karl
  */
 public class Game extends GameApplication{
-    private static final Color COLOR_BACKGROUND = Color.BLACK;
+    public static final Color COLOR_BACKGROUND = Color.BLACK;
+    public static final double STAGE_WIDTH = 400d;
+    public static final double STAGE_HEIGHT = 600d;
     
     private Group root;
+    private Level level;
+    private AudioClip mainAudio;
     
     
     @Override
@@ -33,8 +43,8 @@ public class Game extends GameApplication{
         
         AnchorPane anchor = new AnchorPane();
         anchor.getChildren().add(this.root);
-        anchor.setPrefHeight(600d);
-        anchor.setPrefWidth(400d);
+        anchor.setPrefWidth(STAGE_WIDTH);
+        anchor.setPrefHeight(STAGE_HEIGHT);
         
         Scene scene = new Scene(anchor);
         scene.setFill(COLOR_BACKGROUND);
@@ -42,48 +52,73 @@ public class Game extends GameApplication{
     }
 
     @Override
+    public void onEngineStart() {
+        try {
+            this.mainAudio = new AudioClip(Game.class.getResource("res/Main.wav").toURI().toString());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        this.mainAudio.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    @Override
+    public void onGameStart() {
+        this.mainAudio.play();
+        this.level = new Level();
+        this.root.getChildren().add(this.level);
+        this.level.start();
+    }
+
+    @Override
     public void onCloseStage() {
-        
+        this.mainAudio.stop();
     }
 
     @Override
     public void onPauseGame() {
-        
+        this.mainAudio.setVolume(0.1d);
     }
 
     @Override
     public void onResumeGame() {
-        
+        this.mainAudio.setVolume(1d);
     }
 
     @Override
-    public void onActionKeyPressed() {
-        
-    }
+    public void onActionKeyPressed() {}
 
     @Override
-    public void onActionKeyReleased() {
-        
-    }
+    public void onActionKeyReleased() {}
 
     @Override
-    public void onUpKeyPressed() {
-        
-    }
+    public void onUpKeyPressed() {}
 
     @Override
-    public void onDownKeyPressed() {
-        
-    }
+    public void onUpKeyReleased() {}
+
+    @Override
+    public void onDownKeyPressed() {}
+
+    @Override
+    public void onDownKeyReleased() {}
 
     @Override
     public void onLeftKeyPressed() {
-        
+        this.level.moveBarLeft();
+    }
+
+    @Override
+    public void onLeftKeyReleased() {
+        this.level.stopMoveBar();
     }
 
     @Override
     public void onRightKeyPressed() {
-        
+        this.level.moveBarRight();
     }
-    
+
+    @Override
+    public void onRightKeyReleased() {
+        this.level.stopMoveBar();
+    }   
 }
