@@ -6,6 +6,7 @@
 
 package net.kirauks.minigames.brickbreaker.elements.level;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,6 +17,8 @@ import javafx.util.Duration;
 import net.kirauks.minigames.brickbreaker.Game;
 import net.kirauks.minigames.brickbreaker.elements.Ball;
 import net.kirauks.minigames.brickbreaker.elements.Bar;
+import net.kirauks.minigames.brickbreaker.elements.Bloc;
+import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor.LevelDatas;
 
 /**
  *
@@ -23,6 +26,9 @@ import net.kirauks.minigames.brickbreaker.elements.Bar;
  */
 public class Level extends Parent{
     public static final Duration ANIMATION_TIMELINE_TIME = Duration.millis(40);
+    
+    public static final double BLOCS_FIRST_LINE = 40d;
+    public static final double BLOCS_SPACING = 15d;
     
     private enum BallState{
         CATCHED, MOVING;
@@ -35,20 +41,26 @@ public class Level extends Parent{
     private double moveBallX;
     private double moveBallY;
     
+    private LevelDescriptor descriptor;
+    
     private Timeline timeline;
     private Random random = new Random();
     
-    public Level(){
+    public Level(LevelDatas datas){
         this.bar = new Bar();
         this.ball = new Ball();
-        this.resetLevel();
+        
+        this.descriptor = new LevelDescriptor(datas);
+        this.initBlocs();
+        
+        this.resetPositions();
         
         this.getChildren().addAll(this.bar, this.ball);
         
         this.buildTimeline();
     }
     
-    private void resetLevel(){
+    private void resetPositions(){
         this.bar.setTranslateX(Game.STAGE_WIDTH / 2d - Bar.SIZE / 2d);
         this.bar.setTranslateY(Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d);
         this.moveBar = 0;
@@ -58,6 +70,29 @@ public class Level extends Parent{
         this.ballState = BallState.CATCHED;
         this.moveBallX = (random.nextDouble() - 0.5) * Ball.SPEED_MIN;
         this.moveBallY = -Ball.SPEED_MIN;
+    }
+    
+    private void initBlocs(){
+        ArrayList<ArrayList<Bloc>> levelDatas = this.descriptor.getLevelDatas();
+        int nbLine = 0;
+        for(ArrayList<Bloc> lineDatas : levelDatas){
+            int nbBlocs = lineDatas.size();
+            double lineWidth;
+            if(nbBlocs > 0){
+                lineWidth = nbBlocs * Bloc.SIZE + (nbBlocs - 1) * Level.BLOCS_SPACING;
+            }
+            else{
+                lineWidth = 0;
+            }
+            int nbBloc = 0;
+            for(Bloc b : lineDatas){
+                b.setTranslateY(Level.BLOCS_FIRST_LINE + ((Level.BLOCS_SPACING + Bloc.THICKNESS) * nbLine));
+                b.setTranslateX(((Game.STAGE_WIDTH - lineWidth) / 2d) + ((Bloc.SIZE + Level.BLOCS_SPACING) * nbBloc));
+                this.getChildren().add(b);
+                nbBloc++;
+            }
+            nbLine++;
+        }
     }
     
     private void buildTimeline(){
@@ -170,6 +205,14 @@ public class Level extends Parent{
     }
     
     public void start(){
+        this.timeline.play();
+    }
+    
+    public void pause(){
+        this.timeline.pause();
+    }
+    
+    public void resume(){
         this.timeline.play();
     }
 }

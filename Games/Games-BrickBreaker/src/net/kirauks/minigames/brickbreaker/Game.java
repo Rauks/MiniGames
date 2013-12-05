@@ -12,10 +12,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import net.kirauks.minigames.brickbreaker.elements.level.Level;
+import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor;
 import net.kirauks.minigames.engine.GameApplication;
 
 /**
@@ -58,13 +57,13 @@ public class Game extends GameApplication{
         } catch (URISyntaxException ex) {
             Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        this.mainAudio.setCycleCount(MediaPlayer.INDEFINITE);
+        this.mainAudio.setCycleCount(AudioClip.INDEFINITE);
     }
 
     @Override
     public void onGameStart() {
         this.mainAudio.play();
-        this.level = new Level();
+        this.level = new Level(LevelDescriptor.LevelDatas.L1);
         this.root.getChildren().add(this.level);
         this.level.start();
     }
@@ -76,12 +75,14 @@ public class Game extends GameApplication{
 
     @Override
     public void onPauseGame() {
+        this.level.pause();
         this.mainAudio.setVolume(0.1d);
     }
 
     @Override
     public void onResumeGame() {
         this.mainAudio.setVolume(1d);
+        this.level.resume();
     }
 
     @Override
