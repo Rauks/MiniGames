@@ -115,8 +115,6 @@ public abstract class GameApplication extends Application{
         pauseText.setFill(Color.WHITE);
         this.pausePane.setCenter(pauseText);
         
-        this.setScene(this.createScene());
-        
         this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
@@ -126,6 +124,7 @@ public abstract class GameApplication extends Application{
         
         this.stage.setResizable(false);
         this.stage.show();
+        this.setScene(this.createScene());
         
         this.onGameStart();
     }
