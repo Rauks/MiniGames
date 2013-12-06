@@ -6,10 +6,12 @@
 
 package net.kirauks.minigames.brickbreaker.elements;
 
+import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import net.kirauks.minigames.brickbreaker.Game;
 
 /**
@@ -75,8 +77,12 @@ public class Bloc extends Parent{
     
     public void destroy(){
         if(this.type.breakable){
-            this.view.setVisible(false);
             this.destoyed = true;
+            FadeTransition fade = new FadeTransition(Duration.millis(300));
+            fade.setNode(this.view);
+            fade.setFromValue(1d);
+            fade.setToValue(0d);
+            fade.play();
         }
     }
 }
