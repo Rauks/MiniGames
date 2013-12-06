@@ -173,8 +173,12 @@ public class Level extends Parent{
         }
         double ballMaxY = Game.STAGE_HEIGHT - Ball.RADIUS;
         if(newY > ballMaxY){
+            this.resetPositions();
+            return;
+            /*
             newY = ballMaxY - (newY - ballMaxY);
             reverseY = true;
+            */
         }
         
         //Bar collisions
