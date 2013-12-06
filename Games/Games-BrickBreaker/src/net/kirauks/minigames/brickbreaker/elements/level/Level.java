@@ -25,7 +25,7 @@ import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor.LevelDa
  * @author Karl
  */
 public class Level extends Parent{
-    public static final Duration ANIMATION_TIMELINE_TIME = Duration.millis(40);
+    public static final Duration ANIMATION_TIMELINE_TIME = Duration.millis(16);
     
     public static final double BLOCS_FIRST_LINE = 40d;
     public static final double BLOCS_SPACING = 10d;
@@ -187,14 +187,15 @@ public class Level extends Parent{
                 && newY - Ball.RADIUS <= Game.STAGE_HEIGHT - Bar.BASELINE //+ Bar.THICKNESS
                 && this.bar.getTranslateX() - Ball.RADIUS < newX
                 && this.bar.getTranslateX() + Bar.SIZE + Ball.RADIUS > newX){
+            newY = Game.STAGE_HEIGHT - Bar.BASELINE - Bar.THICKNESS / 2d - Ball.RADIUS;
             reverseY = true;
             //X deviation
             double offset = newX + Ball.RADIUS - this.bar.getTranslateX() - (Bar.SIZE / 2d);
             this.moveBallX += offset / 5d;
         }
         
-        this.ball.setTranslateX(newX);
-        this.ball.setTranslateY(newY);
+        this.fixBallSpeed();
+        
         
         //Blocs colisions
         double ballAjustedY = newY - Level.BLOCS_FIRST_LINE;
@@ -239,12 +240,29 @@ public class Level extends Parent{
             }
         }
         
+        //Ball move
+        this.ball.setTranslateX(newX);
+        this.ball.setTranslateY(newY);
+        
         //Colisions reverses
         if(reverseX){
             this.moveBallX = -this.moveBallX;
         }
         if(reverseY){
             this.moveBallY = -this.moveBallY;
+        }
+    }
+    
+    private void fixBallSpeed(){
+        double speed = Math.sqrt(this.moveBallX * this.moveBallX + this.moveBallY * this.moveBallY);
+        if(speed > Ball.SPEED_MAX){
+            this.moveBallX *= Ball.SPEED_MAX / speed;
+            this.moveBallY *= Ball.SPEED_MAX / speed;
+        }
+        if(speed < Ball.SPEED_MIN){
+            this.moveBallX *= Ball.SPEED_MIN / speed;
+            this.moveBallY *= Ball.SPEED_MIN / speed;
+            
         }
     }
     

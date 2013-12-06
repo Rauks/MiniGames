@@ -20,7 +20,7 @@ public class Bar extends Parent{
     public static final double THICKNESS = 10d;
     public static final Color COLOR = Color.WHITE;
     public static final double BASELINE = 40d;
-    public static final double SPEED = 10d;
+    public static final double SPEED = 5d;
     
     private final Node view;
     
