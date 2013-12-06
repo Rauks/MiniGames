@@ -42,8 +42,12 @@ public class Game extends GameApplication{
         
         AnchorPane anchor = new AnchorPane();
         anchor.getChildren().add(this.root);
+        anchor.setMinWidth(STAGE_WIDTH);
+        anchor.setMinHeight(STAGE_HEIGHT);
         anchor.setPrefWidth(STAGE_WIDTH);
         anchor.setPrefHeight(STAGE_HEIGHT);
+        anchor.setMaxWidth(STAGE_WIDTH);
+        anchor.setMaxHeight(STAGE_HEIGHT);
         
         Scene scene = new Scene(anchor);
         scene.setFill(COLOR_BACKGROUND);

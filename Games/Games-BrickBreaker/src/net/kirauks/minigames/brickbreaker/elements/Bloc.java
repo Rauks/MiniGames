@@ -33,11 +33,13 @@ public class Bloc extends Parent{
         }
     }
     
-    private BlocType type;
-    private Node view;
+    private final BlocType type;
+    private final Node view;
+    private boolean destoyed;
     
     public Bloc(BlocType type){
         this.type = type;
+        this.destoyed = false;
         
         Rectangle rectangle = new Rectangle(SIZE, THICKNESS);
         rectangle.setStroke(this.type.color);
@@ -48,5 +50,14 @@ public class Bloc extends Parent{
     
     public BlocType getType(){
         return type;
+    }
+    
+    public boolean destroyed(){
+        return this.destoyed;
+    }
+    
+    public void destroy(){
+        this.view.setVisible(false);
+        this.destoyed = true;
     }
 }

@@ -185,7 +185,7 @@ public class Level extends Parent{
                 && this.bar.getTranslateX() + Bar.SIZE + Ball.RADIUS > newX){
             reverseY = true;
             //X deviation
-            double offset = newX + Ball.RADIUS - this.bar.getTranslateX() - (bar.SIZE / 2d);
+            double offset = newX + Ball.RADIUS - this.bar.getTranslateX() - (Bar.SIZE / 2d);
             this.moveBallX += offset / 5d;
         }
         
@@ -197,6 +197,36 @@ public class Level extends Parent{
         }
         if(reverseY){
             this.moveBallY = -this.moveBallY;
+        }
+        
+        //Blocs colisions
+        double ballAjustedY = newY - Level.BLOCS_FIRST_LINE;
+        if(ballAjustedY > 0){
+            int nbBlocsLines = this.descriptor.getLevelDatas().size();
+            double nbBallLine = ballAjustedY / (Level.BLOCS_SPACING + Bloc.THICKNESS);
+            if(nbBallLine < nbBlocsLines){
+                ArrayList<Bloc> targetLineDatas = this.descriptor.getLevelDatas().get((int)nbBallLine);
+                int nbBlocs = targetLineDatas.size();
+                double lineWidth;
+                if(nbBlocs > 0){
+                    lineWidth = nbBlocs * Bloc.SIZE + (nbBlocs - 1) * Level.BLOCS_SPACING;
+                }
+                else{
+                    lineWidth = 0;
+                }
+                double ballAjustedX = newX - (Game.STAGE_WIDTH - lineWidth) / 2d;
+                double ndBallCol = ballAjustedX / (Bloc.SIZE + Level.BLOCS_SPACING);
+                if(ndBallCol >= 0 && ndBallCol < targetLineDatas.size()){
+                    Bloc target = targetLineDatas.get((int)ndBallCol);
+                    //Target bloc colisions
+                    if(newX > target.getTranslateX()
+                            && newX < target.getTranslateX() + Bloc.SIZE
+                            && newY > target.getTranslateY()
+                            && newY < target.getTranslateY() + Bloc.THICKNESS){
+                       target.destroy();
+                    }
+                }
+            }
         }
     }
     
