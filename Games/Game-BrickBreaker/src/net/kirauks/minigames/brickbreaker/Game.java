@@ -151,12 +151,12 @@ public class Game extends GameApplication{
     @Override
     public void onPauseGame() {
         this.level.pause();
-        this.mainAudio.setVolume(0.1d);
+        this.mainAudio.stop();
     }
 
     @Override
     public void onResumeGame() {
-        this.mainAudio.setVolume(1d);
+        this.mainAudio.play();
         this.level.resume();
     }
 
