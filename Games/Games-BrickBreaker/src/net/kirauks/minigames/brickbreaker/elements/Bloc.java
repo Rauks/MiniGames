@@ -21,17 +21,19 @@ public class Bloc extends Parent{
     public static final double THICKNESS = 15d;
     
     public enum BlocType{
-        BLUE(Color.BLUE, true, false),
-        RED(Color.RED, true, false),
-        GREEN(Color.GREEN, true, false),
-        YELLOW(Color.YELLOW, true, false),
-        SOLID(Color.GRAY, false, false),
-        NULL(Game.COLOR_BACKGROUND, false, true);
+        BLUE(25, Color.BLUE, true, false),
+        RED(50, Color.RED, true, false),
+        GREEN(75, Color.GREEN, true, false),
+        YELLOW(100, Color.YELLOW, true, false),
+        SOLID(0, Color.GRAY, false, false),
+        NULL(0, Game.COLOR_BACKGROUND, false, true);
         
         private final Color color;
         private final boolean breakable;
         private final boolean traversable;
-        private BlocType(Color color, boolean breakable, boolean traversable){
+        private int breakScore;
+        private BlocType(int breakScore, Color color, boolean breakable, boolean traversable){
+            this.breakScore = breakScore;
             this.color = color;
             this.breakable = breakable;
             this.traversable = traversable;
@@ -54,7 +56,10 @@ public class Bloc extends Parent{
     }
     
     public BlocType getType(){
-        return type;
+        return this.type;
+    }
+    public int getScoreValue(){
+        return this.type.breakScore;
     }
     
     public boolean destroyed(){

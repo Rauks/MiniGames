@@ -43,11 +43,36 @@ public class Level extends Parent{
     private double moveBallY;
     
     private LevelDescriptor descriptor;
+    private int destroyedBlocs = 0;
+    private int lives;
     
     private Timeline timeline;
     private Random random = new Random();
     
-    public Level(LevelDatas datas){
+    private LevelWinListener winListener;
+    private LevelLoseListener loseListener;
+    private LevelScoreListener scoreListener;
+    private LevelLifeListener lifeListener;
+    
+    public void setWinListener(LevelWinListener listener){
+        this.winListener = listener;
+    }
+    
+    public void setLoseListener(LevelLoseListener listener){
+        this.loseListener = listener;
+    }
+    
+    public void setScoreListener(LevelScoreListener listener){
+        this.scoreListener = listener;
+    }
+    
+    public void setLifeListener(LevelLifeListener listener){
+        this.lifeListener = listener;
+    }
+    
+    public Level(LevelDatas datas, int startLifes){
+        this.lives = startLifes;
+        
         this.bar = new Bar();
         this.ball = new Ball();
         
@@ -174,6 +199,15 @@ public class Level extends Parent{
         }
         double ballMaxY = Game.STAGE_HEIGHT - Ball.RADIUS;
         if(newY > ballMaxY){
+            this.lives--;
+            if(this.lifeListener != null){
+                this.lifeListener.onChange(-1);
+            }
+            if(this.lives <= 0){
+                if(this.loseListener != null){
+                   this.loseListener.onLose();
+                }
+            }
             this.resetPositions();
             return;
             /*
@@ -250,6 +284,18 @@ public class Level extends Parent{
                     if(!target.destroyed() && target.breakable()){
                         if(testCollide){
                             target.destroy();
+                            if(target.destroyed()){
+                                this.destroyedBlocs++;
+                                if(this.scoreListener != null){
+                                    this.scoreListener.onChange(target.getScoreValue());
+                                }
+                                if(this.destroyedBlocs >= this.descriptor.countBreakableBlocs()){
+                                    this.pause();
+                                    if(this.winListener != null){
+                                        this.winListener.onWin();
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -287,7 +333,9 @@ public class Level extends Parent{
     }
     
     public void start(){
-        this.timeline.play();
+        if(!this.stopped){
+            this.timeline.play();
+        }
     }
     
     public void pause(){
@@ -295,6 +343,14 @@ public class Level extends Parent{
     }
     
     public void resume(){
-        this.timeline.play();
+        if(!this.stopped){
+            this.timeline.play();
+        }
+    }
+    
+    private boolean stopped = false;
+    public void stopDefinitly(){
+        this.stopped = true;
+        this.timeline.stop();
     }
 }

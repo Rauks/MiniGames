@@ -24,7 +24,14 @@ import net.kirauks.minigames.brickbreaker.elements.Bloc.BlocType;
  */
 public class LevelDescriptor {
     public enum LevelDatas{
-        L1("/net/kirauks/minigames/brickbreaker/res/levels/1.lvl");
+        L1("/net/kirauks/minigames/brickbreaker/res/levels/1.lvl"),
+        L2("/net/kirauks/minigames/brickbreaker/res/levels/2.lvl"),
+        L3("/net/kirauks/minigames/brickbreaker/res/levels/3.lvl"),
+        L4("/net/kirauks/minigames/brickbreaker/res/levels/4.lvl"),
+        L5("/net/kirauks/minigames/brickbreaker/res/levels/5.lvl"),
+        L6("/net/kirauks/minigames/brickbreaker/res/levels/6.lvl"),
+        L7("/net/kirauks/minigames/brickbreaker/res/levels/7.lvl"),
+        L8("/net/kirauks/minigames/brickbreaker/res/levels/8.lvl");
         
         private String url;
         private LevelDatas(String url){
