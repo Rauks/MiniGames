@@ -19,7 +19,7 @@ public class Ball extends Parent{
     public static final double RADIUS = 4d;
     public static final Color COLOR = Color.WHITE;
     public static final double SPEED_MIN = 4d;
-    public static final double SPEED_MAX = 10d;
+    public static final double SPEED_MAX = 8d;
     
     private final Node view;
     

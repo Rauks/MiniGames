@@ -6,6 +6,7 @@
 
 package net.kirauks.minigames.brickbreaker.elements.level;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -218,21 +219,36 @@ public class Level extends Parent{
                     Bloc target = targetLineDatas.get((int)ndBallCol);
                     
                     //Target bloc colisions
-                    boolean testX = newX + Ball.RADIUS > target.getTranslateX() && newX - Ball.RADIUS < target.getTranslateX() + Bloc.SIZE;
-                    boolean testY = newY + Ball.RADIUS > target.getTranslateY() && newY - Ball.RADIUS < target.getTranslateY() + Bloc.THICKNESS;
+                    boolean testUp = newY + Ball.RADIUS > target.getTranslateY();
+                    boolean testDown = newY - Ball.RADIUS < target.getTranslateY() + Bloc.THICKNESS;
+                    boolean testLeft = newX + Ball.RADIUS > target.getTranslateX();
+                    boolean testRight = newX - Ball.RADIUS < target.getTranslateX() + Bloc.SIZE;
+                    boolean testCollide = testUp && testDown && testLeft && testRight;
                     if((!target.traversable() && !target.destroyed() && target.breakable())
                             || (!target.traversable() && !target.breakable())){
-                        if(testX && testY){
+                        if(testCollide){
                             if(newX > target.getTranslateX() && newX < target.getTranslateX() + Bloc.SIZE){
                                 reverseY = true;
+                                if(newY < target.getTranslateY() + Bloc.THICKNESS / 2d){
+                                    newY = target.getTranslateY() - Ball.RADIUS;
+                                }
+                                else{
+                                    newY = target.getTranslateY() + Bloc.THICKNESS + Ball.RADIUS;
+                                }
                             }
                             else{
                                 reverseX = true;
+                                if(newX > target.getTranslateX() + Bloc.SIZE / 2d){
+                                    newX = target.getTranslateX() + Bloc.SIZE + Ball.RADIUS;
+                                }
+                                else{
+                                    newX = target.getTranslateX() - Ball.RADIUS;
+                                }
                             }
                         }
                     }
                     if(!target.destroyed() && target.breakable()){
-                        if(testX && testY){
+                        if(testCollide){
                             target.destroy();
                         }
                     }
