@@ -30,3 +30,5 @@ Games
 
 Somes games are availables :
 * Hangman by [Laetitia Gaignier](https://github.com/Laetitia28)
+* Brick Breaker by [KarlWoditsch](https://github.com/Rauks)
+![BrickBreaker Sample](sample-brickbreaker.png)
