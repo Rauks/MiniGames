@@ -192,13 +192,6 @@ public class Level extends Parent{
         this.ball.setTranslateX(newX);
         this.ball.setTranslateY(newY);
         
-        if(reverseX){
-            this.moveBallX = -this.moveBallX;
-        }
-        if(reverseY){
-            this.moveBallY = -this.moveBallY;
-        }
-        
         //Blocs colisions
         double ballAjustedY = newY - Level.BLOCS_FIRST_LINE;
         if(ballAjustedY > 0){
@@ -218,15 +211,32 @@ public class Level extends Parent{
                 double ndBallCol = ballAjustedX / (Bloc.SIZE + Level.BLOCS_SPACING);
                 if(ndBallCol >= 0 && ndBallCol < targetLineDatas.size()){
                     Bloc target = targetLineDatas.get((int)ndBallCol);
+                    
                     //Target bloc colisions
-                    if(newX > target.getTranslateX()
-                            && newX < target.getTranslateX() + Bloc.SIZE
-                            && newY > target.getTranslateY()
-                            && newY < target.getTranslateY() + Bloc.THICKNESS){
-                       target.destroy();
+                    if(!target.destroyed()){
+                        boolean testX = newX + Ball.RADIUS > target.getTranslateX() && newX - Ball.RADIUS < target.getTranslateX() + Bloc.SIZE;
+                        boolean testY = newY + Ball.RADIUS > target.getTranslateY() && newY - Ball.RADIUS < target.getTranslateY() + Bloc.THICKNESS;
+
+                        if(testX && testY){
+                            target.destroy();
+                            if(newX > target.getTranslateX() && newX < target.getTranslateX() + Bloc.SIZE){
+                                reverseY = true;
+                            }
+                            else{
+                                reverseX = true;
+                            }
+                        }
                     }
                 }
             }
+        }
+        
+        //Colisions reverses
+        if(reverseX){
+            this.moveBallX = -this.moveBallX;
+        }
+        if(reverseY){
+            this.moveBallY = -this.moveBallY;
         }
     }
     
