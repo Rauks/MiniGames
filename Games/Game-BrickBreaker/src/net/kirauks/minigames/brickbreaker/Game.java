@@ -15,15 +15,14 @@ import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import net.kirauks.minigames.brickbreaker.elements.level.Level;
-import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor.LevelDatas;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelLifeListener;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelLoseListener;
@@ -37,9 +36,11 @@ import net.kirauks.minigames.engine.GameApplication;
  */
 public class Game extends GameApplication{
     private static final Font FONT_PIXEL_20 = Font.loadFont(GameApplication.class.getResourceAsStream("res/Visitor.ttf"), 20);
+    private static final Font FONT_PIXEL_40 = Font.loadFont(GameApplication.class.getResourceAsStream("res/Visitor.ttf"), 40);
     
     public static final Color COLOR_BACKGROUND = Color.BLACK;
     public static final Color COLOR_TEXT = Color.WHITE;
+    public static final Color COLOR_GAMEOVER = Color.RED;
     public static final double STAGE_WIDTH = 400d;
     public static final double STAGE_HEIGHT = 600d;
     public static final double TEXT_BASELINE = 40d;
@@ -47,6 +48,9 @@ public class Game extends GameApplication{
     public static final int LIVES = 5;
     
     private Group root;
+    private Text gameOver;
+    private Text scoreLabel;
+    private Text livesLabel;
     private Level level;
     private AudioClip mainAudio;
     private int score = 0;
@@ -76,6 +80,16 @@ public class Game extends GameApplication{
         anchor.setMaxWidth(STAGE_WIDTH);
         anchor.setMaxHeight(STAGE_HEIGHT);
         
+        this.gameOver = new Text("Game Over");
+        this.gameOver.setFont(FONT_PIXEL_40);
+        this.gameOver.setWrappingWidth(STAGE_WIDTH);
+        this.gameOver.setTextAlignment(TextAlignment.CENTER);
+        this.gameOver.setFill(COLOR_GAMEOVER);
+        this.gameOver.setVisible(false);
+        anchor.getChildren().add(this.gameOver);
+        this.gameOver.setTranslateX(0d);
+        this.gameOver.setTranslateY(STAGE_HEIGHT / 2d);
+        
         BorderPane texts = new BorderPane();
         texts.setPadding(new Insets(TEXT_INSETS));
         texts.setMinWidth(STAGE_WIDTH);
@@ -84,29 +98,29 @@ public class Game extends GameApplication{
         texts.setTranslateX(0d);
         texts.setTranslateY(STAGE_HEIGHT - TEXT_BASELINE);
         
-        final Label scoreLabel = new Label("Score : " + this.score);
-        scoreLabel.setFont(FONT_PIXEL_20);
-        scoreLabel.setTextFill(COLOR_TEXT);
-        final Label livesLabel = new Label("Lives : " + this.lives);
-        livesLabel.setFont(FONT_PIXEL_20);
-        livesLabel.setTextFill(COLOR_TEXT);
+        this.scoreLabel = new Text("Score : " + this.score);
+        this.scoreLabel.setFont(FONT_PIXEL_20);
+        this.scoreLabel.setFill(COLOR_TEXT);
+        this.livesLabel = new Text("Lives : " + this.lives);
+        this.livesLabel.setFont(FONT_PIXEL_20);
+        this.livesLabel.setFill(COLOR_TEXT);
         
-        texts.setLeft(scoreLabel);
-        texts.setRight(livesLabel);
+        texts.setLeft(this.scoreLabel);
+        texts.setRight(this.livesLabel);
         anchor.getChildren().add(texts);
         
         this.lifeListener = new LevelLifeListener() {
             @Override
             public void onChange(int value) {
                 Game.this.lives += value;
-                livesLabel.setText("Lives : " + Game.this.lives);
+                Game.this.livesLabel.setText("Lives : " + Game.this.lives);
             }
         };
         this.scoreListener = new LevelScoreListener() {
             @Override
             public void onChange(int value) {
                 Game.this.score += value;
-                scoreLabel.setText("Score : " + Game.this.score);
+                Game.this.scoreLabel.setText("Score : " + Game.this.score);
             }
         };
         this.winListener = new LevelWinListener() {
@@ -118,6 +132,7 @@ public class Game extends GameApplication{
         this.loseListener = new LevelLoseListener() {
             @Override
             public void onLose() {
+                Game.this.gameOver.setVisible(true);
                 Game.this.level.stopDefinitly();
             }
         };
@@ -165,7 +180,17 @@ public class Game extends GameApplication{
 
     @Override
     public void onActionKeyReleased() {
-        this.level.launchBall();
+        if(this.gameOver.isVisible()){
+            this.gameOver.setVisible(false);
+            this.lives = LIVES;
+            this.livesLabel.setText("Lives : " + Game.this.lives);
+            this.score = 0;
+            this.scoreLabel.setText("Score : " + Game.this.score);
+            this.loadRandomLevel();
+        }
+        else{
+            this.level.launchBall();
+        }
     }
 
     @Override
