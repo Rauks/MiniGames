@@ -33,6 +33,7 @@ public class LevelDescriptor {
     }
     
     private ArrayList<ArrayList<Bloc>> datas;
+    private int breakableBlocs = 0;
     
     public LevelDescriptor(LevelDatas datas){
         this.datas = new ArrayList<>();
@@ -42,20 +43,32 @@ public class LevelDescriptor {
                 ArrayList<Bloc> lineDatas = new ArrayList<>();
                 char[] chars = line.toCharArray();
                 for(char c : chars){
+                    Bloc b;
                     switch(c){
                         case 'R':
-                            lineDatas.add(new Bloc(BlocType.RED));
+                            b = new Bloc(BlocType.RED);
                             break;
                         case 'G':
-                            lineDatas.add(new Bloc(BlocType.GREEN));
+                            b = new Bloc(BlocType.GREEN);
                             break;
                         case 'B':
-                            lineDatas.add(new Bloc(BlocType.BLUE));
+                            b = new Bloc(BlocType.BLUE);
                             break;
                         case 'Y':
-                            lineDatas.add(new Bloc(BlocType.YELLOW));
+                            b = new Bloc(BlocType.YELLOW);
+                            break;
+                        case '#':
+                            b = new Bloc(BlocType.SOLID);
+                            break;
+                        default:
+                        case ' ':
+                            b = new Bloc(BlocType.NULL);
                             break;
                     }
+                    if(b.breakable()){
+                        this.breakableBlocs++;
+                    }
+                    lineDatas.add(b);
                 }
                 this.datas.add(lineDatas);
             }
@@ -66,5 +79,8 @@ public class LevelDescriptor {
     
     public ArrayList<ArrayList<Bloc>> getLevelDatas(){
         return this.datas;
+    }
+    public int countBreakableBlocs(){
+        return breakableBlocs;
     }
 }

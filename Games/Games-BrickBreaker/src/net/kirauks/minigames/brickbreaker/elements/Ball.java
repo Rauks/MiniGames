@@ -16,7 +16,7 @@ import javafx.scene.shape.Circle;
  * @author Karl
  */
 public class Ball extends Parent{
-    public static final double RADIUS = 2d;
+    public static final double RADIUS = 4d;
     public static final Color COLOR = Color.WHITE;
     public static final double SPEED_MIN = 5d;
     public static final double SPEED_MAX = 10d;

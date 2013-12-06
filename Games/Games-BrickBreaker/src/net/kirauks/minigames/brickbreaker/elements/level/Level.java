@@ -28,7 +28,7 @@ public class Level extends Parent{
     public static final Duration ANIMATION_TIMELINE_TIME = Duration.millis(40);
     
     public static final double BLOCS_FIRST_LINE = 40d;
-    public static final double BLOCS_SPACING = 15d;
+    public static final double BLOCS_SPACING = 10d;
     
     private enum BallState{
         CATCHED, MOVING;
@@ -217,18 +217,22 @@ public class Level extends Parent{
                     Bloc target = targetLineDatas.get((int)ndBallCol);
                     
                     //Target bloc colisions
-                    if(!target.destroyed()){
-                        boolean testX = newX + Ball.RADIUS > target.getTranslateX() && newX - Ball.RADIUS < target.getTranslateX() + Bloc.SIZE;
-                        boolean testY = newY + Ball.RADIUS > target.getTranslateY() && newY - Ball.RADIUS < target.getTranslateY() + Bloc.THICKNESS;
-
+                    boolean testX = newX + Ball.RADIUS > target.getTranslateX() && newX - Ball.RADIUS < target.getTranslateX() + Bloc.SIZE;
+                    boolean testY = newY + Ball.RADIUS > target.getTranslateY() && newY - Ball.RADIUS < target.getTranslateY() + Bloc.THICKNESS;
+                    if((!target.traversable() && !target.destroyed() && target.breakable())
+                            || (!target.traversable() && !target.breakable())){
                         if(testX && testY){
-                            target.destroy();
                             if(newX > target.getTranslateX() && newX < target.getTranslateX() + Bloc.SIZE){
                                 reverseY = true;
                             }
                             else{
                                 reverseX = true;
                             }
+                        }
+                    }
+                    if(!target.destroyed() && target.breakable()){
+                        if(testX && testY){
+                            target.destroy();
                         }
                     }
                 }
