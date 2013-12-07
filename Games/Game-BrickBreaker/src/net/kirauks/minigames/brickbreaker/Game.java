@@ -22,8 +22,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import net.kirauks.minigames.brickbreaker.audio.AudioManager;
 import net.kirauks.minigames.brickbreaker.elements.level.Level;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor.LevelDatas;
+import net.kirauks.minigames.brickbreaker.elements.level.LevelHitListener;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelLifeListener;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelLoseListener;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelScoreListener;
@@ -52,14 +54,16 @@ public class Game extends GameApplication{
     private Text scoreLabel;
     private Text livesLabel;
     private Level level;
-    private AudioClip mainAudio;
     private int score = 0;
     private int lives = LIVES;
+    
+    private AudioManager audioManager;
     
     private LevelWinListener winListener;
     private LevelLoseListener loseListener;
     private LevelScoreListener scoreListener;
     private LevelLifeListener lifeListener;
+    private LevelHitListener hitListener;
     
     
     @Override
@@ -114,6 +118,7 @@ public class Game extends GameApplication{
             public void onChange(int value) {
                 Game.this.lives += value;
                 Game.this.livesLabel.setText("Lives : " + Game.this.lives);
+                Game.this.audioManager.playDie();
             }
         };
         this.scoreListener = new LevelScoreListener() {
@@ -136,6 +141,19 @@ public class Game extends GameApplication{
                 Game.this.level.stopDefinitly();
             }
         };
+        this.hitListener = new LevelHitListener() {;
+            @Override
+            public void onHit(LevelHitListener.HitMarker marker) {
+                switch(marker){
+                    case BAR:
+                        Game.this.audioManager.playBar();
+                        break;
+                    case BLOC_BREAK:
+                        Game.this.audioManager.playBreak();
+                        break;
+                }
+            }
+        };
         
         Scene scene = new Scene(anchor);
         scene.setFill(COLOR_BACKGROUND);
@@ -144,34 +162,29 @@ public class Game extends GameApplication{
 
     @Override
     public void onEngineStart() {
-        try {
-            this.mainAudio = new AudioClip(Game.class.getResource("res/Main.wav").toURI().toString());
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        this.mainAudio.setCycleCount(AudioClip.INDEFINITE);
+        this.audioManager = AudioManager.getInstance();
     }
 
     @Override
     public void onGameStart() {
-        this.mainAudio.play();
+        this.audioManager.playBackgroundLoop();
         this.loadRandomLevel();
     }
 
     @Override
     public void onCloseStage() {
-        this.mainAudio.stop();
+        this.audioManager.stopBackgroundLoop();
     }
 
     @Override
     public void onPauseGame() {
         this.level.pause();
-        this.mainAudio.stop();
+        this.audioManager.stopBackgroundLoop();
     }
 
     @Override
     public void onResumeGame() {
-        this.mainAudio.play();
+        this.audioManager.playBackgroundLoop();
         this.level.resume();
     }
 
@@ -238,6 +251,7 @@ public class Game extends GameApplication{
         this.level.setScoreListener(this.scoreListener);
         this.level.setWinListener(this.winListener);
         this.level.setLoseListener(this.loseListener);
+        this.level.setHitListener(this.hitListener);
         
         this.root.getChildren().add(this.level);
         this.level.start();

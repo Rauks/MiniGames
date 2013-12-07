@@ -20,6 +20,7 @@ import net.kirauks.minigames.brickbreaker.elements.Ball;
 import net.kirauks.minigames.brickbreaker.elements.Bar;
 import net.kirauks.minigames.brickbreaker.elements.Bloc;
 import net.kirauks.minigames.brickbreaker.elements.level.LevelDescriptor.LevelDatas;
+import net.kirauks.minigames.brickbreaker.elements.level.LevelHitListener.HitMarker;
 
 /**
  *
@@ -53,6 +54,7 @@ public class Level extends Parent{
     private LevelLoseListener loseListener;
     private LevelScoreListener scoreListener;
     private LevelLifeListener lifeListener;
+    private LevelHitListener hitListener;
     
     public void setWinListener(LevelWinListener listener){
         this.winListener = listener;
@@ -68,6 +70,40 @@ public class Level extends Parent{
     
     public void setLifeListener(LevelLifeListener listener){
         this.lifeListener = listener;
+    }
+    
+    public void setHitListener(LevelHitListener listener){
+        this.hitListener = listener;
+    }
+    
+    private void fireHitEvent(HitMarker marker){
+        if(this.hitListener != null){
+            this.hitListener.onHit(marker);
+        }
+    }
+    
+    private void fireLoseLifeEvent(){
+        if(this.lifeListener != null){
+            this.lifeListener.onChange(-1);
+        }
+    }
+    
+    private void fireScoreEvent(int value){
+        if(this.scoreListener != null){
+            this.scoreListener.onChange(value);
+        }
+    }
+    
+    private void fireLoseGameEvent(){
+        if(this.loseListener != null){
+            this.loseListener.onLose();
+         }
+    }
+    
+    private void fireWinGameEvent(){
+        if(this.winListener != null){
+            this.winListener.onWin();
+        }
     }
     
     public Level(LevelDatas datas, int startLifes){
@@ -187,26 +223,25 @@ public class Level extends Parent{
         if(newX < Ball.RADIUS){
             newX = Ball.RADIUS;
             reverseX = true;
+            this.fireHitEvent(HitMarker.WINDOW);
         }
         double ballMaxX = Game.STAGE_WIDTH - Ball.RADIUS;
         if(newX > ballMaxX){
             newX = ballMaxX - (newX - ballMaxX);
             reverseX = true;
+            this.fireHitEvent(HitMarker.WINDOW);
         }
         if(newY < Ball.RADIUS){
             newY = Ball.RADIUS;
             reverseY = true;
+            this.fireHitEvent(HitMarker.WINDOW);
         }
         double ballMaxY = Game.STAGE_HEIGHT - Ball.RADIUS;
         if(newY > ballMaxY){
             this.lives--;
-            if(this.lifeListener != null){
-                this.lifeListener.onChange(-1);
-            }
+            this.fireLoseLifeEvent();
             if(this.lives <= 0){
-                if(this.loseListener != null){
-                   this.loseListener.onLose();
-                }
+                this.fireLoseGameEvent();
             }
             this.resetPositions();
             return;
@@ -227,6 +262,7 @@ public class Level extends Parent{
             //X deviation
             double offset = newX + Ball.RADIUS - this.bar.getTranslateX() - (Bar.SIZE / 2d);
             this.moveBallX += offset / 5d;
+            this.fireHitEvent(HitMarker.BAR);
         }
         
         this.fixBallSpeed();
@@ -279,6 +315,7 @@ public class Level extends Parent{
                                     newX = target.getTranslateX() - Ball.RADIUS;
                                 }
                             }
+                            this.fireHitEvent(HitMarker.BLOC_UNBREAK);
                         }
                     }
                     if(!target.destroyed() && target.breakable()){
@@ -286,16 +323,13 @@ public class Level extends Parent{
                             target.destroy();
                             if(target.destroyed()){
                                 this.destroyedBlocs++;
-                                if(this.scoreListener != null){
-                                    this.scoreListener.onChange(target.getScoreValue());
-                                }
+                                this.fireScoreEvent(target.getScoreValue());
                                 if(this.destroyedBlocs >= this.descriptor.countBreakableBlocs()){
                                     this.pause();
-                                    if(this.winListener != null){
-                                        this.winListener.onWin();
-                                    }
+                                    this.fireWinGameEvent();
                                 }
                             }
+                            this.fireHitEvent(HitMarker.BLOC_BREAK);
                         }
                     }
                 }
@@ -330,6 +364,7 @@ public class Level extends Parent{
     
     public void launchBall(){
         this.ballState = BallState.MOVING;
+        this.fireHitEvent(HitMarker.BAR);
     }
     
     public void start(){
