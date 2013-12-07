@@ -233,7 +233,7 @@ public class Level extends Parent{
         
         
         //Blocs colisions
-        double ballAjustedY = newY - Level.BLOCS_FIRST_LINE;
+        double ballAjustedY = newY - Level.BLOCS_FIRST_LINE + Level.BLOCS_SPACING / 2d;
         if(ballAjustedY > 0){
             int nbBlocsLines = this.descriptor.getLevelDatas().size();
             double nbBallLine = ballAjustedY / (Level.BLOCS_SPACING + Bloc.THICKNESS);
@@ -247,7 +247,7 @@ public class Level extends Parent{
                 else{
                     lineWidth = 0;
                 }
-                double ballAjustedX = newX - (Game.STAGE_WIDTH - lineWidth) / 2d;
+                double ballAjustedX = newX - (Game.STAGE_WIDTH - lineWidth) / 2d + Level.BLOCS_SPACING / 2d;
                 double ndBallCol = ballAjustedX / (Bloc.SIZE + Level.BLOCS_SPACING);
                 if(ndBallCol >= 0 && ndBallCol < targetLineDatas.size()){
                     Bloc target = targetLineDatas.get((int)ndBallCol);
