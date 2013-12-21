@@ -63,33 +63,77 @@
     <Label fx:id="textLabelChoose" layoutX="316.0" layoutY="94.0" text="" />
     <Label layoutX="142.0" layoutY="444.0" text="Turns still :" />
     <Label fx:id="ResultWinLoseLabel" layoutX="205.0" layoutY="444.0" text="0" />
-    <Rectangle arcHeight="30.0" arcWidth="30.0" fill="BLACK" height="120.0" layoutX="400.0" layoutY="357.0" stroke="BLACK" strokeType="INSIDE" width="355.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="415.0" layoutY="265.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="425.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="435.0" layoutY="285.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="445.0" layoutY="295.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="455.0" layoutY="305.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="465.0" layoutY="315.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="475.0" layoutY="325.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="485.0" layoutY="335.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-    <GridPane hgap="0.0" layoutX="404.0" layoutY="366.0" prefWidth="344.0" vgap="0.0">
+    <Rectangle arcHeight="30.0" arcWidth="30.0" fill="BLACK" height="103.0" layoutX="400.0" layoutY="357.0" stroke="BLACK" strokeType="INSIDE" width="309.0" />
+    <GridPane hgap="0.0" layoutX="404.0" layoutY="363.0" prefWidth="309.0" vgap="0.0">
       <children>
-        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Rectangle fx:id="A" arcHeight="10.0" arcWidth="10.0" fill="#bfbfbf" height="30.0" onMousePressed="#test" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+        <Rectangle fx:id="Z" arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" onMousePressed="#test" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
         <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
         <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
         <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="0" />
         <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+        <Label maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="A" textAlignment="LEFT" wrapText="false" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+          <GridPane.margin>
+            <Insets />
+          </GridPane.margin>
+        </Label>
+        <Label prefWidth="16.0" text="Z" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="E" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="R" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+        <Label prefWidth="16.0" text="T" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="Y" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="U" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="I" textAlignment="CENTER" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="O" textAlignment="CENTER" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="16.0" text="P" textAlignment="CENTER" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label prefWidth="31.0" text="Q" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="S" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="D" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="F" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="G" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="H" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="J" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="K" textAlignment="CENTER" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="L" textAlignment="CENTER" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="M" textAlignment="CENTER" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+        <Label prefWidth="16.0" text="W" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label prefWidth="16.0" text="X" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label prefWidth="16.0" text="C" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Label prefWidth="16.0" text="V" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Label prefWidth="16.0" text="B" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+        <Label prefWidth="16.0" text="N" textAlignment="CENTER" GridPane.columnIndex="5" GridPane.rowIndex="2" />
       </children>
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="31.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="0.0" prefWidth="31.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.0" minWidth="10.0" prefWidth="30.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="0.0" prefWidth="30.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="374.0" minWidth="0.0" prefWidth="32.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="695.0" minWidth="10.0" prefWidth="31.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="791.0" minWidth="10.0" prefWidth="155.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
       </columnConstraints>
       <padding>
         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

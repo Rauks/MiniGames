@@ -23,7 +23,7 @@ public class JavaFXApplication5 extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
 
        
-         Scene scene = new Scene(root, 800, 600, Color.WHITE);
+         Scene scene = new Scene(root, 800, 500, Color.WHITE);
 
         primaryStage.setScene(scene);
         primaryStage.show();

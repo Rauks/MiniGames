@@ -9,9 +9,11 @@ package javafxapplication5;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -37,6 +39,12 @@ public class FXMLDocumentController implements Initializable {
     private void handleButtonActionLevel3(ActionEvent event) {
         System.out.println("You clicked me 3 !");
         textLabelChoose.setText("Level 3 is choosen");
+    }
+    
+          @FXML
+    private void test(MouseEvent event) {
+        
+        System.out.println("You clicked me 3 !");
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
