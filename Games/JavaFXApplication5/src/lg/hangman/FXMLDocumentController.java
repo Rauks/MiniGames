@@ -26,8 +26,8 @@ import javafx.scene.shape.Rectangle;
 public final class FXMLDocumentController implements Initializable {
 
     private String letterSelected;
-    AlgoHangManController levelController = new AlgoHangManController(1);
-    DialogBox d;
+    private AlgoHangManController levelController = new AlgoHangManController(1);
+    private DialogBox d;
     @FXML
     private Label textLabelChoose, helpStringLabel, wordGuess, ResultWinLoseLabel, count, letterSelectedLabelString;
     @FXML
@@ -147,7 +147,6 @@ public final class FXMLDocumentController implements Initializable {
         System.out.println(" isAbandon " + d.isAbandonGame());
         if (d.isAbandonGame()) {
             playAgain();
-
         }
     }
 
@@ -168,7 +167,6 @@ public final class FXMLDocumentController implements Initializable {
     private void onExited(MouseEvent event) {
         Rectangle r = (Rectangle) event.getSource();
         System.out.println("r id :" + r.getId());
-
         //   r.setFill(Color.WHITE);
     }
 
@@ -206,7 +204,7 @@ public final class FXMLDocumentController implements Initializable {
         }
         ResultWinLoseLabel.setText("Turns still : " + Integer.toString(levelController.getMax_choose() - levelController.getCount()));
         if (levelController.getCount() == levelController.getMax_choose()) {
-                            r.setTranslateY(0);
+            r.setTranslateY(0);
 
             d = new DialogBox("Loser ! Play again ?");
             if (d.isAbandonGame()) {
@@ -217,7 +215,7 @@ public final class FXMLDocumentController implements Initializable {
             }
         }
         if (levelController.isWin()) {
-                            r.setTranslateY(0);
+            r.setTranslateY(0);
 
             d = new DialogBox("Win ! Play again ?");
             if (d.isAbandonGame()) {
@@ -261,9 +259,7 @@ public final class FXMLDocumentController implements Initializable {
          r.setFill(Color.WHITE);
          }*/
         fillTouchWhite();
-
         levelController = new AlgoHangManController(1);
-
         ResultWinLoseLabel.setText("Turns still : " + Integer.toString(levelController.getMax_choose()));
     }
 
