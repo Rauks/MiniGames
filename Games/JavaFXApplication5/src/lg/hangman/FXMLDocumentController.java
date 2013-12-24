@@ -202,7 +202,7 @@ public final class FXMLDocumentController implements Initializable {
             System.out.println("I draw ");
             manDrawOneByOne(levelController.getCount());
         }
-        ResultWinLoseLabel.setText("Turns still : " + Integer.toString(levelController.getMax_choose() - levelController.getCount()));
+        ResultWinLoseLabel.setText(Integer.toString(levelController.getMax_choose() - levelController.getCount()));
         if (levelController.getCount() == levelController.getMax_choose()) {
             r.setTranslateY(0);
 
@@ -260,7 +260,7 @@ public final class FXMLDocumentController implements Initializable {
          }*/
         fillTouchWhite();
         levelController = new AlgoHangManController(1);
-        ResultWinLoseLabel.setText("Turns still : " + Integer.toString(levelController.getMax_choose()));
+        ResultWinLoseLabel.setText(Integer.toString(levelController.getMax_choose()));
     }
 
     public void manDrawOneByOne(int i) {
