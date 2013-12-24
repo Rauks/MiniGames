@@ -35,7 +35,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <GridPane layoutX="451.0" layoutY="140.0">
+    <GridPane layoutX="451.0" layoutY="145.0" prefHeight="145.0" prefWidth="262.0">
       <children>
         <Label text="Guessing" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <Label text="Count : " GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -43,7 +43,7 @@
         <Label text="Letters Selected :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <Label fx:id="letterSelectedLabelString" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <Label text="Help :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label fx:id="helpStringLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label fx:id="helpStringLabel" prefWidth="125.0" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <Label text="Word Guess :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <Label fx:id="wordGuess" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
       </children>

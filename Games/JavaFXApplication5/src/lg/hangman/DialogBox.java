@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package lg.hangman;
 
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import javafx.stage.WindowEvent;
  * @author Laetitia
  */
 public class DialogBox extends Stage {
-    
 
     private Button btOK = new Button("OK");
     private Button btCancel = new Button("Cancel");
@@ -53,20 +51,19 @@ public class DialogBox extends Stage {
         this.abandonGame = abandonGame;
     }
 
-    public DialogBox(String msg) {
+    public DialogBox(String msg ,String wordGuess) {
 
         this.initModality(Modality.APPLICATION_MODAL);
-       //this.initModality(Modality.WINDOW_MODAL);
-        //this.initStyle(StageStyle.UTILITY);
-                this.setOnCloseRequest(new EventHandler<WindowEvent>() {
-          @Override
-          public void handle(WindowEvent we) {
-              System.out.println("Stage is closing");
-              setAbandonGame(false);
-          }
-      }); 
+
+        this.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent we) {
+                System.out.println("Stage is closing");
+                setAbandonGame(false);
+            }
+        });
         this.sizeToScene();
-        this.setScene(new Scene(VBoxBuilder.create().children(new Text(msg), btOK, btCancel).
+        this.setScene(new Scene(VBoxBuilder.create().children(new Text(msg),new Text("The word was :"+wordGuess), btOK, btCancel).
                 alignment(Pos.CENTER).padding(new Insets(5)).build()));
 
         btOK.setOnAction(new EventHandler<ActionEvent>() {
@@ -87,7 +84,6 @@ public class DialogBox extends Stage {
             }
         });
         this.showAndWait();
-        
+
     }
 }
-

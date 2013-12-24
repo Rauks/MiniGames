@@ -143,17 +143,19 @@ public final class FXMLDocumentController implements Initializable {
     @FXML
     private void handleButtonActionAbandon(ActionEvent event) {
         System.out.println("You clicked Abandon !");
-        d = new DialogBox("Abandon");
+        d = new DialogBox("Abandon",levelController.getWord());
         System.out.println(" isAbandon " + d.isAbandonGame());
         if (d.isAbandonGame()) {
+            helpStringLabel.setText("The word was : "+levelController.getWord());
             playAgain();
         }
+   
     }
 
     @FXML
     private void handleButtonActionHelp(ActionEvent event) {
         System.out.println("You clicked Help !");
-        helpStringLabel.setText(levelController.getWord());
+        helpStringLabel.setText("The word was : "+levelController.getWord());
     }
 
     @FXML
@@ -206,23 +208,25 @@ public final class FXMLDocumentController implements Initializable {
         if (levelController.getCount() == levelController.getMax_choose()) {
             r.setTranslateY(0);
 
-            d = new DialogBox("Loser ! Play again ?");
+            d = new DialogBox("Loser ! Play again ?",levelController.getWord());
             if (d.isAbandonGame()) {
                 playAgain();
             } else {
                 fillTouchWhite();
+
 
             }
         }
         if (levelController.isWin()) {
             r.setTranslateY(0);
 
-            d = new DialogBox("Win ! Play again ?");
+            d = new DialogBox("Win ! Play again ?",levelController.getWord());
             if (d.isAbandonGame()) {
                 playAgain();
             } else {
                 fillTouchWhite();
                 r.setTranslateY(0);
+
 
             }
         }
