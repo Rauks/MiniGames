@@ -6,6 +6,8 @@
 
 package lg.hangman;
 
+import java.net.URL;
+
 /**
  *
  * @author Laetitia
@@ -33,9 +35,9 @@ public class AlgoHangManController {
     private DialogBox d;
 
     private FileWord fw;
-    private final String nameFileWord_1_2_3 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\lg\\hangman\\Files\\Word_1_2_3.txt";
-    private final String nameFileWord_4_5_6 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\lg\\hangman\\Files\\Word_4_5_6.txt";
-    private final String nameFileWord_7 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\lg\\hangman\\Files\\Word_7.txt";
+    private final String nameFileWord_1_2_3 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_1_2_3.txt";
+    private final String nameFileWord_4_5_6 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_4_5_6.txt";
+    private final String nameFileWord_7 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_7.txt";
 
     AlgoHangManController(int _Level) {
         level_default = _Level;
