@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package lg.hangman;
-
-import java.net.URL;
 
 /**
  *
@@ -14,10 +11,10 @@ import java.net.URL;
  */
 public class AlgoHangManController {
     /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+     * To change this license header, choose License Headers in Project Properties.
+     * To change this template file, choose Tools | Templates
+     * and open the template in the editor.
+     */
 
     private int level_default = 1;
     private String word = "";
@@ -35,9 +32,7 @@ public class AlgoHangManController {
     private DialogBox d;
 
     private FileWord fw;
-    private final String nameFileWord_1_2_3 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_1_2_3.txt";
-    private final String nameFileWord_4_5_6 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_4_5_6.txt";
-    private final String nameFileWord_7 = "C:\\Users\\Laetitia\\Documents\\GitHub\\MiniGames\\Games\\JavaFXApplication5\\src\\res\\lg\\hangman\\Word_7.txt";
+ 
 
     AlgoHangManController(int _Level) {
         level_default = _Level;
@@ -61,18 +56,18 @@ public class AlgoHangManController {
         System.out.println("level choose " + level_default);
         switch (level_default) {
             case 1:
-                fw = new FileWord(nameFileWord_4_5_6);
+                fw = new FileWord(level_default);
                 break;
 
             case 2:
-                fw = new FileWord(nameFileWord_7);
+                fw = new FileWord(level_default);
                 break;
             case 3:
-                fw = new FileWord(nameFileWord_1_2_3);
+                fw = new FileWord(level_default);
                 break;
         }
         this.word = fw.getWord();
-       
+
         System.out.println("word - chooosen : " + this.word);
 
         //create guess_word
