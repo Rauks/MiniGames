@@ -15,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -31,15 +30,15 @@ public final class FileWord {
     private String word = "";
     private int int_random = 0;
 
-    private final String nameFileWord_1_2_3 = "/JavaFXApplication5/src/ressources/lg/hangman/Word_1_2_3.txt";
-    private final String nameFileWord_4_5_6 = "/ressources/lg/hangman/Word_4_5_6.txt";
+    private final String nameFileWord_1_2_3 = "ressources/Word_1_2_3.txt";
+    private final String nameFileWord_4_5_6 = "ressources/Word_4_5_6.txt";
 
-    private final String nameFileWord_7 = "/JavaFXApplication5/src/ressources/lg/hangman/Word_7.txt";
+    private final String nameFileWord_7 = "ressources/Word_7.txt";
 
 
     public FileWord(int level) {
 
-        System.out.println("FileWord ");
+        System.out.println("FileWord enter");
         Scanner scanner = null;
         int countLine;
       
@@ -56,9 +55,15 @@ public final class FileWord {
           //  InputStream configStream = this.getClass().getResourceAsStream("Word_4_5_6.txt");
          //  C:\Users\Laetitia\Documents\GitHub\MiniGames\Games\JavaFXApplication5\src\ressources\lg\hangman\Word_1_2_3.txt
 //BufferedReader configReader = new BufferedReader(new InputStreamReader(configStream, "UTF-8"));
-            BufferedReader bf = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("Word_1_2_3.txt")));
+            
+            System.out.println((this.getClass().getClassLoader().getResourceAsStream("ressources/Word_1_2_3.txt")) == null);
+   
+          //  BufferedReader bf = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("ressources/Word_1_2_3.txt")));
+          //  BufferedReader bf = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("Word_1_2_3.txt")));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(WhatIsmyFile(level))));
+
             scanner = new Scanner(bf);
-            int maxLine = count(WhatIsmyFile(level));
+            int maxLine = count(this.getClass().getClassLoader().getResourceAsStream(WhatIsmyFile(level)));
           
             System.out.println("maxLine" + maxLine);
             this.int_random = this.rand.nextInt(maxLine);
@@ -78,7 +83,7 @@ public final class FileWord {
             Logger.getLogger(FileWord.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/*
     public void SplitDicoFile(String nameFile) {
         File file1, file2, file3 = null;
         try {
@@ -129,9 +134,8 @@ public final class FileWord {
         }
 
     }
-
-    public int count(String filename) throws IOException {
-        InputStream is = new BufferedInputStream(new FileInputStream(filename));
+*/
+    public int count(InputStream is) throws IOException {
         try {
             byte[] c = new byte[1024];
             int count = 0;
