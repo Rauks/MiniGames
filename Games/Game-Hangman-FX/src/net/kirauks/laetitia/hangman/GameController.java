@@ -34,8 +34,9 @@ import net.kirauks.javafx.dialog.Dialog.DialogType;
 public final class GameController implements Initializable {
     private static final Color TOUCH_BACKGROUND = Color.WHITE;
     
+    private int currentLevel = 1;
     private char letterSelected;
-    private AlgoHangManController levelController = new AlgoHangManController(1);
+    private AlgoHangManController levelController;
     
     @FXML
     private Label textLabelChoose, helpStringLabel, wordGuess, ResultWinLoseLabel, count, letterSelectedLabelString;
@@ -90,34 +91,20 @@ public final class GameController implements Initializable {
 
     @FXML
     private void handleButtonActionLevel1(ActionEvent event) {
-        System.out.println("You clicked level 1!");
-        level2.setDisable(true);
-        level3.setDisable(true);
-        levelController = new AlgoHangManController(1);
-        textLabelChoose.setText("Level 1 is choosen");
-        wordGuess.setText(levelController.getGuess_word());
+        this.currentLevel = 1;
+        this.startGame(this.currentLevel);
     }
 
     @FXML
     private void handleButtonActionLevel2(ActionEvent event) {
-        System.out.println("You clicked me 2 !");
-        textLabelChoose.setText("Level 2 is choosen");
-        levelController = new AlgoHangManController(2);
-        System.out.println(" Level 2");
-        wordGuess.setText(levelController.getGuess_word());
-        level1.setDisable(true);
-        level3.setDisable(true);
+        this.currentLevel = 2;
+        this.startGame(this.currentLevel);
     }
 
     @FXML
     private void handleButtonActionLevel3(ActionEvent event) {
-        System.out.println("You clicked me 3 !");
-        System.out.println(" Level 3");
-        levelController = new AlgoHangManController(3);
-        textLabelChoose.setText("Level 3 is choosen");
-        wordGuess.setText(levelController.getGuess_word());
-        level2.setDisable(true);
-        level1.setDisable(true);
+        this.currentLevel = 3;
+        this.startGame(this.currentLevel);
     }
 
     @FXML
@@ -128,7 +115,7 @@ public final class GameController implements Initializable {
             public void onResponse(DialogResponse response) {
                 if(response == DialogResponse.YES){
                     helpStringLabel.setText("The word was : "+levelController.getWord());
-                    playAgain();
+                    startGame(currentLevel);
                 }
             }
         }, DialogType.QUESTION, DialogOptions.YES_NO, this.getStage()).show();   
@@ -183,7 +170,7 @@ public final class GameController implements Initializable {
                         @Override
                         public void onResponse(DialogResponse response) {
                             if(response == DialogResponse.YES){
-                                playAgain();
+                                startGame(currentLevel);
                             }
                             else{
                                 fillTouchWhite();
@@ -203,7 +190,7 @@ public final class GameController implements Initializable {
                         @Override
                         public void onResponse(DialogResponse response) {
                             if(response == DialogResponse.YES){
-                                playAgain();
+                                startGame(currentLevel);
                             }
                             else{
                                 fillTouchWhite();
@@ -219,71 +206,56 @@ public final class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillTouchs();
+        this.startGame(currentLevel);
     }
-
-    public void playAgain() {
-        level3.setDisable(false);
-        level2.setDisable(false);
-        level1.setDisable(false);
-        textLabelChoose.setText("Level 1 is choosen by default");
-
-        wordGuess.setText("nothing");
+    
+    private void startGame(int level){
+        fillTouchWhite();
+        
+        //Level level text
+        textLabelChoose.setText("Level " + String.valueOf(level) + " is choosen");
+        
+        //Game model init
+        levelController = new AlgoHangManController(level);
+        wordGuess.setText(levelController.getGuess_word());
+        
+        //Reset hangman
+        manInit(Color.WHITE, 6);
+        manInit(Color.web("bfbfbf"), 1);
+        
+        //Stats init
         count.setText("0");
         letterSelectedLabelString.setText(" ");
         helpStringLabel.setText(" ");
-        manInit(Color.WHITE, 6);
-        manInit(Color.web("000000"), 1);
-        /* 
-         int i =0;
-         System.out.println("size" + touch.size());
-         while(i<touch.size()){
-         System.out.println("fefrr : " );
-         touch.get(i).setFill(Color.WHITE);
-         i++;
-         }*/
-        /*
-         for(Rectangle r : touch){
-         System.out.println("fefrr : ");
-         r.setFill(Color.WHITE);
-         }*/
-        fillTouchWhite();
-        levelController = new AlgoHangManController(1);
         ResultWinLoseLabel.setText(Integer.toString(levelController.getMax_choose()));
     }
 
-    public void manDrawOneByOne(int i) {
+    private void manDrawOneByOne(int i) {
         switch (i) {
-
             case 1:
                 gallows_bottom.setStrokeWidth(5);
                 gallows_bottom.setStroke(Color.RED);
-
                 break;
 
             case 2:
                 gallows_middle.setStrokeWidth(5);
                 gallows_middle.setStroke(Color.RED);
-
                 break;
             case 3:
                 gallows_top.setStrokeWidth(5);
                 gallows_top.setStroke(Color.RED);
-
                 break;
             case 4:
                 gallows_head.setStrokeWidth(3);
                 gallows_head.setStroke(Color.RED);
-
                 break;
             case 5:
                 legLeft.setStrokeWidth(5);
                 legLeft.setStroke(Color.RED);
                 break;
-
             case 6:
                 torso.setStrokeWidth(3);
                 torso.setStroke(Color.RED);
-
                 break;
             case 7:
                 armLeft.setStrokeWidth(5);
@@ -297,18 +269,15 @@ public final class GameController implements Initializable {
                 legRight.setStrokeWidth(5);
                 legRight.setStroke(Color.RED);
                 break;
-
             case 10:
-
                 head.setFill(Color.RED);
                 head.setStroke(Color.ORANGE);//réglage de la couleur de la bordure et de son épaisseur
                 head.setStrokeWidth(2);
-
                 break;
         }
     }
 
-    public final void manInit(Color a, int b) {
+    private void manInit(Color a, int b) {
         gallows_bottom.setStrokeWidth(b);
         gallows_bottom.setStroke(a);
 
@@ -321,8 +290,8 @@ public final class GameController implements Initializable {
         gallows_head.setStrokeWidth(b);
         gallows_head.setStroke(a);
 
-        head.setFill(Color.YELLOW);
-        head.setStroke(Color.ORANGE);//réglage de la couleur de la bordure et de son épaisseur
+        head.setFill(Color.WHITE);
+        head.setStroke(a);//réglage de la couleur de la bordure et de son épaisseur
         head.setStrokeWidth(2);
 
         torso.setStrokeWidth(b);
@@ -347,9 +316,5 @@ public final class GameController implements Initializable {
     }
     public Stage getStage(){
         return this.stage;
-    }
-    
-    public void quitGame(){
-        System.exit(0);
     }
 }

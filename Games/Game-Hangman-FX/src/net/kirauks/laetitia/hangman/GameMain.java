@@ -27,10 +27,10 @@ public class GameMain extends Application {
         
         Scene scene = new Scene(root, 800, 500, Color.WHITE);
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setTitle("Hangman !");
         primaryStage.setResizable(false);
+        primaryStage.setTitle("Hangman !");
+        primaryStage.show();
+        primaryStage.setScene(scene);
         
         
 

@@ -125,7 +125,7 @@ public class AlgoHangManController {
         }
         guess_wordChartoString = new String(this.guess_word_Char);
 
-        if (guess_wordChartoString.equals(s2)) {
+        if (guess_wordChartoString.replace(" ", "").equals(s2)) {
             System.out.println("WIN");
             this.win = true;
             //d = new DialogBox("Win ! Play again ?");
