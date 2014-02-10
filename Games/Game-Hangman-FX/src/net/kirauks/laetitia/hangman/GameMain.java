@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lg.hangman;
+package net.kirauks.laetitia.hangman;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,19 +16,21 @@ import javafx.scene.paint.Color;
  *
  * @author Laetitia
  */
-public class MainFXML extends Application {
+public class GameMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        GameController controller = fxmlLoader.<GameController>getController();
+        controller.setStage(primaryStage);
         
- 
-       
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml")); 
         Scene scene = new Scene(root, 800, 500, Color.WHITE);
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setTitle("Hangman Start FXML !!! ");
+        primaryStage.setTitle("Hangman !");
+        primaryStage.setResizable(false);
         
         
 

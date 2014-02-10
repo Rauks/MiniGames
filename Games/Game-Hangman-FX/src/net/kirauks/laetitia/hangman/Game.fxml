@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="net.kirauks.laetitia.hangman.GameController">
+  <children>
+    <Label fx:id="label" layoutX="126.0" layoutY="120.0" minHeight="16.0" minWidth="69.0" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="BLACK" height="78.0" layoutX="0.0" layoutY="0.0" stroke="BLACK" strokeType="INSIDE" width="800.0" />
+    <GridPane alignment="TOP_LEFT" hgap="5.0" layoutX="113.0" layoutY="17.0" prefHeight="36.0" prefWidth="476.0" vgap="5.0">
+      <children>
+        <Button fx:id="level1" onAction="#handleButtonActionLevel1" text="Level 1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Button fx:id="level2" onAction="#handleButtonActionLevel2" text="Level 2" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Button fx:id="level3" onAction="#handleButtonActionLevel3" text="Level 3" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Button fx:id="abandon" contentDisplay="CENTER" onAction="#handleButtonActionAbandon" text="Abandon" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+        <Button fx:id="help" onAction="#handleButtonActionHelp" prefWidth="57.0" text="Help" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="10.0" prefWidth="72.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="10.0" prefWidth="72.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="10.0" prefWidth="72.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="83.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.0" minWidth="10.0" prefWidth="81.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="73.0" minWidth="10.0" prefWidth="53.0" />
+      </columnConstraints>
+      <padding>
+        <Insets />
+      </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <GridPane layoutX="452.0" layoutY="148.0" prefHeight="145.0" prefWidth="262.0">
+      <children>
+        <Label text="Guessing" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="Count : " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="count" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Letters Selected :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label fx:id="letterSelectedLabelString" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Help :" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="helpStringLabel" prefWidth="125.0" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label text="Word Guess :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="wordGuess" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <Label fx:id="textLabelChoose" layoutX="316.0" layoutY="94.0" text="" />
+    <Label layoutX="142.0" layoutY="444.0" text="Turns still :" />
+    <Label fx:id="ResultWinLoseLabel" layoutX="205.0" layoutY="444.0" text="0" />
+    <Rectangle arcHeight="5.0" arcWidth="5.0" height="103.99999237060547" layoutX="404.0" layoutY="363.0" stroke="$x1" strokeType="INSIDE" width="349.0">
+      <effect>
+        <DropShadow height="23.015873015873016" radius="11.007936507936508" spread="0.24603174603174602" width="23.015873015873016" />
+      </effect>
+      <fill>
+        <Color blue="0.750" green="0.750" red="0.750" fx:id="x1" />
+      </fill>
+    </Rectangle>
+    <GridPane alignment="CENTER" hgap="5.0" layoutX="404.0" layoutY="363.0" prefWidth="-1.0" vgap="5.0">
+      <children>
+        <Rectangle fx:id="A" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Rectangle fx:id="Z" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Rectangle fx:id="E" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Rectangle fx:id="R" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+        <Rectangle fx:id="T" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+        <Rectangle fx:id="Y" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+        <Rectangle fx:id="U" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+        <Rectangle fx:id="I" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+        <Rectangle fx:id="O" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+        <Rectangle fx:id="P" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="0" />
+        <Rectangle fx:id="Q" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Rectangle fx:id="S" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Rectangle fx:id="D" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Rectangle fx:id="F" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Rectangle fx:id="G" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+        <Rectangle fx:id="H" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+        <Rectangle fx:id="J" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Rectangle fx:id="K" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+        <Rectangle fx:id="L" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+        <Rectangle fx:id="M" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+        <Rectangle fx:id="W" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Rectangle fx:id="X" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Rectangle fx:id="C" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Rectangle fx:id="V" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Rectangle fx:id="B" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+        <Rectangle fx:id="N" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="30.0" onMousePressed="#pressTouch" onMouseReleased="#releaseTouch" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="16.0" minWidth="30.0" prefHeight="-1.0" prefWidth="-1.0" text="A" textAlignment="LEFT" textFill="BLACK" wrapText="false" GridPane.columnIndex="0" GridPane.rowIndex="0">
+          <font>
+            <Font name="System Bold" size="12.0" fx:id="x2" />
+          </font>
+        </Label>
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="Z" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="E" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="R" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+        <Label alignment="CENTER" contentDisplay="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="T" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="Y" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="U" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="I" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="O" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="P" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="Q" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" contentDisplay="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="S" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="D" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="F" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="G" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="H" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="J" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="K" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="L" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="M" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="W" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="X" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="C" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="V" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="B" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" disable="true" font="$x2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="-1.0" text="N" textAlignment="CENTER" textFill="BLACK" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="0.0" prefWidth="30.0" />
+      </columnConstraints>
+      <padding>
+        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+      </padding>
+      <rowConstraints>
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <Group id="Group" layoutX="130.0" layoutY="212.0">
+      <children>
+        <Line fx:id="gallows_bottom" endX="180.0" endY="2.0" layoutX="-100.0" layoutY="220.0" startX="100.0" startY="2.0">
+          <stroke>
+            <Color blue="0.625" green="0.625" red="0.625" fx:id="x3" />
+          </stroke>
+        </Line>
+        <Line fx:id="gallows_middle" endX="0.0" endY="53.0" layoutX="41.0" layoutY="168.0" startX="0.0" startY="-168.0" stroke="$x3" />
+        <Line fx:id="gallows_top" endX="-21.0" endY="0.0" layoutX="141.0" layoutY="0.0" startX="-100.0" stroke="$x3" />
+        <Line fx:id="gallows_head" endX="-100.0" endY="19.0" layoutX="220.0" layoutY="1.0" startX="-100.0" stroke="$x3" />
+        <Circle fx:id="head" fill="WHITE" layoutX="120.0" layoutY="32.0" radius="11.25" stroke="$x3" strokeType="INSIDE" />
+        <Line fx:id="torso" endX="0.0" endY="-41.0" layoutX="120.0" layoutY="150.0" startX="0.0" startY="-106.0" stroke="$x3" />
+        <Line fx:id="armLeft" endX="-63.0" endY="23.0" layoutX="182.0" layoutY="47.0" startX="-85.0" startY="5.0" stroke="$x3" />
+        <Line fx:id="legRight" endX="-63.0" endY="23.0" layoutX="206.0" layoutY="106.0" startX="-85.0" startY="5.0" stroke="$x3" />
+        <Line fx:id="armRight" endX="-80.0" endY="-18.0" layoutX="222.0" layoutY="70.0" startX="-101.0" startY="0.0" stroke="$x3" />
+        <Line fx:id="legLeft" endX="-80.0" endY="-18.0" layoutX="200.0" layoutY="128.0" startX="-101.0" startY="0.0" stroke="$x3" />
+      </children>
+    </Group>
+  </children>
+</AnchorPane>

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lg.hangman;
+package net.kirauks.laetitia.hangman;
 
+import java.awt.JobAttributes;
+import net.kirauks.laetitia.hangman.model.AlgoHangManController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -18,16 +20,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import net.kirauks.javafx.dialog.Dialog;
+import net.kirauks.javafx.dialog.Dialog.DialogListener;
+import net.kirauks.javafx.dialog.Dialog.DialogOptions;
+import net.kirauks.javafx.dialog.Dialog.DialogResponse;
+import net.kirauks.javafx.dialog.Dialog.DialogType;
 
 /**
  *
  * @author Laetitia
  */
-public final class FXMLDocumentController implements Initializable {
-
-    private String letterSelected;
+public final class GameController implements Initializable {
+    private static final Color TOUCH_BACKGROUND = Color.WHITE;
+    
+    private char letterSelected;
     private AlgoHangManController levelController = new AlgoHangManController(1);
-    private DialogBox d;
+    
     @FXML
     private Label textLabelChoose, helpStringLabel, wordGuess, ResultWinLoseLabel, count, letterSelectedLabelString;
     @FXML
@@ -43,41 +52,14 @@ public final class FXMLDocumentController implements Initializable {
 
     private final ArrayList<Rectangle> touch = new ArrayList<>();
 
-    public FXMLDocumentController() {
-        this.letterSelected = "";
-        fillTouchs();
+    private void fillTouchWhite() {
+        for(Rectangle t : touch){
+            System.out.println(t.getId());
+            t.setFill(TOUCH_BACKGROUND);
+        }
     }
 
-    public void fillTouchWhite() {
-        A.setFill(Color.WHITE);
-        Z.setFill(Color.WHITE);
-        E.setFill(Color.WHITE);
-        R.setFill(Color.WHITE);
-        T.setFill(Color.WHITE);
-        Y.setFill(Color.WHITE);
-        U.setFill(Color.WHITE);
-        I.setFill(Color.WHITE);
-        O.setFill(Color.WHITE);
-        P.setFill(Color.WHITE);
-        Q.setFill(Color.WHITE);
-        S.setFill(Color.WHITE);
-        D.setFill(Color.WHITE);
-        F.setFill(Color.WHITE);
-        G.setFill(Color.WHITE);
-        H.setFill(Color.WHITE);
-        J.setFill(Color.WHITE);
-        K.setFill(Color.WHITE);
-        L.setFill(Color.WHITE);
-        M.setFill(Color.WHITE);
-        W.setFill(Color.WHITE);
-        X.setFill(Color.WHITE);
-        C.setFill(Color.WHITE);
-        V.setFill(Color.WHITE);
-        B.setFill(Color.WHITE);
-        N.setFill(Color.WHITE);
-    }
-
-    public void fillTouchs() {
+    private void fillTouchs() {
         this.touch.add(A);
         this.touch.add(Z);
         this.touch.add(E);
@@ -99,13 +81,11 @@ public final class FXMLDocumentController implements Initializable {
         this.touch.add(L);
         this.touch.add(M);
         this.touch.add(W);
-
         this.touch.add(X);
         this.touch.add(C);
         this.touch.add(V);
         this.touch.add(B);
         this.touch.add(N);
-
     }
 
     @FXML
@@ -143,33 +123,21 @@ public final class FXMLDocumentController implements Initializable {
     @FXML
     private void handleButtonActionAbandon(ActionEvent event) {
         System.out.println("You clicked Abandon !");
-        d = new DialogBox("Abandon",levelController.getWord());
-        System.out.println(" isAbandon " + d.isAbandonGame());
-        if (d.isAbandonGame()) {
-            helpStringLabel.setText("The word was : "+levelController.getWord());
-            playAgain();
-        }
-   
+        new Dialog("Are you sure you want to give up ?", new DialogListener() {
+            @Override
+            public void onResponse(DialogResponse response) {
+                if(response == DialogResponse.YES){
+                    helpStringLabel.setText("The word was : "+levelController.getWord());
+                    playAgain();
+                }
+            }
+        }, DialogType.QUESTION, DialogOptions.YES_NO, this.getStage()).show();   
     }
 
     @FXML
     private void handleButtonActionHelp(ActionEvent event) {
         System.out.println("You clicked Help !");
         helpStringLabel.setText("The word was : "+levelController.getWord());
-    }
-
-    @FXML
-    private void getBack_touch(MouseEvent event) {
-        Rectangle r = (Rectangle) event.getSource();
-        System.out.println("getBack : r id :" + r.getId());
-        // r.setFill(Color.LIGHTGRAY);
-    }
-
-    @FXML
-    private void onExited(MouseEvent event) {
-        Rectangle r = (Rectangle) event.getSource();
-        System.out.println("r id :" + r.getId());
-        //   r.setFill(Color.WHITE);
     }
 
     @FXML
@@ -182,16 +150,16 @@ public final class FXMLDocumentController implements Initializable {
 
     @FXML
     private void pressTouch(MouseEvent event) {
-        Rectangle r = (Rectangle) event.getSource();
+        final Rectangle r = (Rectangle) event.getSource();
         System.out.println("r id :" + r.getId());
         String myIdLetter = r.getId();
         r.setFill(Color.DARKGREY);
         r.setTranslateY(-3);
-        letterSelected = r.getId();
+        letterSelected = r.getId().toLowerCase().charAt(0);
         System.out.println("DrawScene letterSelected :" + letterSelected);
-        letterSelectedLabelString.setText(letterSelected);
+        letterSelectedLabelString.setText(Character.toString(letterSelected).toUpperCase());
         System.out.println("DrawScene letterSelected :" + letterSelected);
-        levelController.Guess(letterSelected.toLowerCase());
+        levelController.Guess(letterSelected);
 
         //updating of word to guess
         wordGuess.setText(levelController.getGuess_wordChartoString());
@@ -208,33 +176,49 @@ public final class FXMLDocumentController implements Initializable {
         if (levelController.getCount() == levelController.getMax_choose()) {
             r.setTranslateY(0);
 
-            d = new DialogBox("Loser ! Play again ?",levelController.getWord());
-            if (d.isAbandonGame()) {
-                playAgain();
-            } else {
-                fillTouchWhite();
-
-
-            }
+            new Dialog("Game Over !", new DialogListener() {
+                @Override
+                public void onResponse(DialogResponse response) {
+                    new Dialog("Play Again ?", new DialogListener() {
+                        @Override
+                        public void onResponse(DialogResponse response) {
+                            if(response == DialogResponse.YES){
+                                playAgain();
+                            }
+                            else{
+                                fillTouchWhite();
+                            }
+                        }
+                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();   
+                }
+            }, DialogType.WARNING, DialogOptions.OK, this.getStage()).show();
         }
         if (levelController.isWin()) {
             r.setTranslateY(0);
 
-            d = new DialogBox("Win ! Play again ?",levelController.getWord());
-            if (d.isAbandonGame()) {
-                playAgain();
-            } else {
-                fillTouchWhite();
-                r.setTranslateY(0);
-
-
-            }
+            new Dialog("Epic Win !", new DialogListener() {
+                @Override
+                public void onResponse(DialogResponse response) {
+                    new Dialog("Play Again ?", new DialogListener() {
+                        @Override
+                        public void onResponse(DialogResponse response) {
+                            if(response == DialogResponse.YES){
+                                playAgain();
+                            }
+                            else{
+                                fillTouchWhite();
+                                r.setTranslateY(0);
+                            }
+                        }
+                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();   
+                }
+            }, DialogType.WARNING, DialogOptions.OK, this.getStage()).show();
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        fillTouchs();
     }
 
     public void playAgain() {
@@ -357,4 +341,15 @@ public final class FXMLDocumentController implements Initializable {
         legLeft.setStroke(a);
     }
 
+    private Stage stage;
+    public void setStage(Stage primaryStage) {
+        this.stage = primaryStage;
+    }
+    public Stage getStage(){
+        return this.stage;
+    }
+    
+    public void quitGame(){
+        System.exit(0);
+    }
 }
