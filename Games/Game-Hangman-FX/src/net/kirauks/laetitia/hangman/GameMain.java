@@ -5,12 +5,12 @@
  */
 package net.kirauks.laetitia.hangman;
 
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  *
@@ -24,15 +24,13 @@ public class GameMain extends Application {
         Parent root = (Parent) fxmlLoader.load();
         GameController controller = fxmlLoader.<GameController>getController();
         controller.setStage(primaryStage);
-        
+
         Scene scene = new Scene(root, 800, 500, Color.WHITE);
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Hangman !");
         primaryStage.show();
         primaryStage.setScene(scene);
-        
-        
 
     }
 

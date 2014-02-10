@@ -5,8 +5,6 @@
  */
 package net.kirauks.laetitia.hangman;
 
-import java.awt.JobAttributes;
-import net.kirauks.laetitia.hangman.model.AlgoHangManController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -26,18 +24,20 @@ import net.kirauks.javafx.dialog.Dialog.DialogListener;
 import net.kirauks.javafx.dialog.Dialog.DialogOptions;
 import net.kirauks.javafx.dialog.Dialog.DialogResponse;
 import net.kirauks.javafx.dialog.Dialog.DialogType;
+import net.kirauks.laetitia.hangman.model.AlgoHangManController;
 
 /**
  *
  * @author Laetitia
  */
 public final class GameController implements Initializable {
+
     private static final Color TOUCH_BACKGROUND = Color.WHITE;
-    
+
     private int currentLevel = 1;
     private char letterSelected;
     private AlgoHangManController levelController;
-    
+
     @FXML
     private Label textLabelChoose, helpStringLabel, wordGuess, ResultWinLoseLabel, count, letterSelectedLabelString;
     @FXML
@@ -54,8 +54,7 @@ public final class GameController implements Initializable {
     private final ArrayList<Rectangle> touch = new ArrayList<>();
 
     private void fillTouchWhite() {
-        for(Rectangle t : touch){
-            System.out.println(t.getId());
+        for (Rectangle t : touch) {
             t.setFill(TOUCH_BACKGROUND);
         }
     }
@@ -109,28 +108,25 @@ public final class GameController implements Initializable {
 
     @FXML
     private void handleButtonActionAbandon(ActionEvent event) {
-        System.out.println("You clicked Abandon !");
         new Dialog("Are you sure you want to give up ?", new DialogListener() {
             @Override
             public void onResponse(DialogResponse response) {
-                if(response == DialogResponse.YES){
-                    helpStringLabel.setText("The word was : "+levelController.getWord());
+                if (response == DialogResponse.YES) {
+                    helpStringLabel.setText("The word was : " + levelController.getWord());
                     startGame(currentLevel);
                 }
             }
-        }, DialogType.QUESTION, DialogOptions.YES_NO, this.getStage()).show();   
+        }, DialogType.QUESTION, DialogOptions.YES_NO, this.getStage()).show();
     }
 
     @FXML
     private void handleButtonActionHelp(ActionEvent event) {
-        System.out.println("You clicked Help !");
-        helpStringLabel.setText("The word was : "+levelController.getWord());
+        helpStringLabel.setText("The word was : " + levelController.getWord());
     }
 
     @FXML
     private void releaseTouch(MouseEvent event) {
         Rectangle r = (Rectangle) event.getSource();
-        System.out.println("release id :" + r.getId());
         r.setFill(Color.LIGHTGRAY);
         r.setTranslateY(0);
     }
@@ -145,7 +141,6 @@ public final class GameController implements Initializable {
         letterSelected = r.getId().toLowerCase().charAt(0);
         System.out.println("DrawScene letterSelected :" + letterSelected);
         letterSelectedLabelString.setText(Character.toString(letterSelected).toUpperCase());
-        System.out.println("DrawScene letterSelected :" + letterSelected);
         levelController.Guess(letterSelected);
 
         //updating of word to guess
@@ -156,7 +151,6 @@ public final class GameController implements Initializable {
 
         //draw man if wrong letter
         if (levelController.isDraw()) {
-            System.out.println("I draw ");
             manDrawOneByOne(levelController.getCount());
         }
         ResultWinLoseLabel.setText(Integer.toString(levelController.getMax_choose() - levelController.getCount()));
@@ -169,14 +163,13 @@ public final class GameController implements Initializable {
                     new Dialog("Play Again ?", new DialogListener() {
                         @Override
                         public void onResponse(DialogResponse response) {
-                            if(response == DialogResponse.YES){
+                            if (response == DialogResponse.YES) {
                                 startGame(currentLevel);
-                            }
-                            else{
+                            } else {
                                 fillTouchWhite();
                             }
                         }
-                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();   
+                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();
                 }
             }, DialogType.WARNING, DialogOptions.OK, this.getStage()).show();
         }
@@ -189,15 +182,14 @@ public final class GameController implements Initializable {
                     new Dialog("Play Again ?", new DialogListener() {
                         @Override
                         public void onResponse(DialogResponse response) {
-                            if(response == DialogResponse.YES){
+                            if (response == DialogResponse.YES) {
                                 startGame(currentLevel);
-                            }
-                            else{
+                            } else {
                                 fillTouchWhite();
                                 r.setTranslateY(0);
                             }
                         }
-                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();   
+                    }, DialogType.QUESTION, DialogOptions.YES_NO, GameController.this.getStage()).show();
                 }
             }, DialogType.WARNING, DialogOptions.OK, this.getStage()).show();
         }
@@ -208,21 +200,21 @@ public final class GameController implements Initializable {
         fillTouchs();
         this.startGame(currentLevel);
     }
-    
-    private void startGame(int level){
+
+    private void startGame(int level) {
         fillTouchWhite();
-        
+
         //Level level text
         textLabelChoose.setText("Level " + String.valueOf(level) + " is choosen");
-        
+
         //Game model init
         levelController = new AlgoHangManController(level);
         wordGuess.setText(levelController.getGuess_word());
-        
+
         //Reset hangman
         manInit(Color.WHITE, 6);
         manInit(Color.web("bfbfbf"), 1);
-        
+
         //Stats init
         count.setText("0");
         letterSelectedLabelString.setText(" ");
@@ -311,10 +303,12 @@ public final class GameController implements Initializable {
     }
 
     private Stage stage;
+
     public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
     }
-    public Stage getStage(){
+
+    public Stage getStage() {
         return this.stage;
     }
 }

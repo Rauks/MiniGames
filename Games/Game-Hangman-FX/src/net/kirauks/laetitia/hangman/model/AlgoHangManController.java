@@ -10,6 +10,7 @@ package net.kirauks.laetitia.hangman.model;
  * @author Laetitia
  */
 public class AlgoHangManController {
+
     private int level_default = 1;
     private String guess_word = "";
     private String CharsProposed = "";
@@ -29,15 +30,12 @@ public class AlgoHangManController {
         if (level_default == 1) {
 
             start(level_default);
-            System.out.println(level_default);
         } else if (level_default == 2) {
 
             start(level_default);
-            System.out.println(level_default);
         } else {
 
             start(level_default);
-            System.out.println(level_default);
         }
     }
 
@@ -61,13 +59,11 @@ public class AlgoHangManController {
         for (int i = 0; i < word.length(); i++) {
             this.guess_word = this.guess_word + "_ ";
         }
-        System.out.println("word  : " + this.guess_word);
         initGuess();
     }
 
     private void initGuess() {
         if (this.count == this.max_choose) {
-            System.out.println("Already lose");
         } else {
             //create a char [] of guess_word ----- and word "paulo"
             this.guess_word_Char = this.guess_word.toCharArray();
@@ -92,23 +88,19 @@ public class AlgoHangManController {
         System.out.println("Guess :letter :" + letter);
         System.out.println("Guess :char proposed :" + CharsProposed);
         System.out.println("Guess :coutn :" + this.count);
-        System.out.println("Guess :guess_wordChartoString :" + this.guess_wordChartoString);
 
         if (word.contains(Character.toString(letter))) {
             if (this.CharsProposed.contains(Character.toString(letter))) {
                 this.count = this.count + 1;
-                System.out.println("Wrong ! ");
                 this.draw = true;
 
             } else {
                 System.out.println("Rigth   " + word.length());
-                System.out.println("Rigth   " + this.guess_word_Char.length);
 
                 for (int i = 0; i < word.length(); i++) {
                     char aChar = letter;
                     System.out.println("achar " + aChar);
                     char bChar = word_Char[i];
-                    System.out.println("bchar i " + bChar);
                     if (aChar == bChar) {
                         guess_word_Char[2 * i] = aChar;
                     }
@@ -120,21 +112,17 @@ public class AlgoHangManController {
             this.count = this.count + 1;
             System.out.println("Wrong ! two");
             this.CharsProposed = this.CharsProposed + letter;
-            System.out.println("Wrong tow :" + CharsProposed);
             this.draw = true;
         }
         guess_wordChartoString = new String(this.guess_word_Char);
 
         if (guess_wordChartoString.replace(" ", "").equals(s2)) {
-            System.out.println("WIN");
             this.win = true;
             //d = new DialogBox("Win ! Play again ?");
             //Win();
 
         }
         if (this.count == this.max_choose) {
-            System.out.println("\n\nYou Lost! The word was: " + word);
-            //d = new DialogBox("Loser ! Play again ?");
             //Lose();
         }
         // Guess();
